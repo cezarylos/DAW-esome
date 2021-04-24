@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 .container {
   display: flex;
   flex-flow: column;
@@ -6,5 +8,13 @@
   .main {
     display: flex;
     flex: 1;
+
+    .tracks {
+      display: flex;
+      flex-flow: column;
+      flex: 1;
+      background: $grey-200;
+      padding: 2.4rem 1.2rem;
+    }
   }
 }

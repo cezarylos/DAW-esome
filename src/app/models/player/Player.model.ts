@@ -1,3 +1,5 @@
+import * as buffer from 'buffer';
+
 class Player {
 
   private audioBufferSourceNode: AudioBufferSourceNode | undefined;
