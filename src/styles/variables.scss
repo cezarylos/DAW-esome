@@ -5,4 +5,5 @@ $grey-200: #E5E7EB;
 $grey-800: #1F2937;
 $grey-900: #111827;
 
-$font-family-inter: 'Inter';
+// TODO move to typography mixins and load font from project for better performance
+$font-family-inter: 'Inter', sans-serif;

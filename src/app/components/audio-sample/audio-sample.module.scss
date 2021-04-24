@@ -1,0 +1,21 @@
+@import 'src/styles/variables';
+
+.container {
+  background: $grey-100;
+  border-radius: 0.8rem;
+  width: 31.3rem;
+  height: 5.6rem;
+  padding: 1.2rem 2.1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0.8rem;
+
+  .name {
+    font-family: $font-family-inter;
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: $grey-800;
+    margin-left: 1.2rem;
+  }
+}

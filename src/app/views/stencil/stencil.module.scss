@@ -1,0 +1,31 @@
+@import 'src/styles/variables';
+
+.container {
+  height: 100%;
+  width: 35rem;
+  background: $grey-50;
+  padding: 1.6rem;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-right: 2px solid #D1D5DB;
+
+  .header {
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+    font-family: $font-family-inter;
+    font-weight: 500;
+    font-size: 1.8rem;
+    color: #4C4E50;
+    margin-left: 0.9rem;
+  }
+
+  .samples {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex: 1;
+  }
+}
