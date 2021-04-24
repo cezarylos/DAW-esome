@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { playSound } from 'utils/playback.utils';
+import AudioSample from 'components/audio-sample/audio-sample.component';
+import styles from 'App.module.scss';
+
+const audioCtx = new AudioContext();
+export const AppAudioContext = React.createContext<AudioContext>(audioCtx);
 
 function App() {
+
+  const onPlay = (start: number = 0) => (audioBuffer: AudioBuffer): void => {
+    playSound({ context: audioCtx, audioBuffer, start });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppAudioContext.Provider value={audioCtx}>
+      <div className={styles.App}>
+        <AudioSample onPlay={onPlay()} sourceUrl={'samples/Bass.mp3'}/>
+        <AudioSample onPlay={onPlay(20)} sourceUrl={'samples/Bass.mp3'}/>
+      </div>
+    </AppAudioContext.Provider>
   );
 }
 
