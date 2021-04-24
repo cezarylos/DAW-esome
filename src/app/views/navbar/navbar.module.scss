@@ -1,0 +1,24 @@
+@import 'src/styles/variables';
+
+.container {
+  height: 8.5rem;
+  width: 100%;
+  background: $grey-900;
+  padding: 2.2rem 4.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  img {
+    width: 3.6rem;
+    height: auto;
+  }
+
+  h5 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-left: 1.6rem;
+    color: $white;
+    font-family: $font-family-inter;
+  }
+}

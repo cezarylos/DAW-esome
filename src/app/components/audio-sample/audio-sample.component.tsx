@@ -1,8 +1,8 @@
-import Player from 'models/player/Player.model';
+import Player from 'app/models/player/Player.model';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
-import { loadAudioBufferUtil } from 'utils/load-audio-buffer.util';
+import { RootState } from 'app/store/store';
+import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
 
 interface AudioSampleComponentInterface {
   sourceUrl: string;

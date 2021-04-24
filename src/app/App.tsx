@@ -1,12 +1,13 @@
-import styles from 'App.module.scss';
-import AudioSample from 'components/audio-sample/audio-sample.component';
-import Player from 'models/player/Player.model';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
-import { loadAudioBufferUtil } from 'utils/load-audio-buffer.util';
+import styles from 'app/App.module.scss';
+import Player from 'app/models/player/Player.model';
+import Navbar from 'app/views/navbar/navbar.component';
 
-function App() {
+import { RootState } from 'app/store/store';
+import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
+
+const App = (): ReactElement => {
 
   const { context } = useSelector((state: RootState) => state.audioContext);
 
@@ -28,11 +29,8 @@ function App() {
   };
 
   return (
-    <div className={styles.App}>
-      <button onClick={go}>GO</button>
-      <AudioSample sourceUrl={'samples/Bass.mp3'}/>
-      <AudioSample sourceUrl={'samples/Guitar.mp3'}/>
-      <AudioSample sourceUrl={'samples/Vocals.mp3'}/>
+    <div className={styles.App} onClick={go}>
+      <Navbar/>
     </div>
   );
 }
