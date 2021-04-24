@@ -1,15 +1,27 @@
-import { useLoadAudioBuffer } from 'hooks/useLoadAudioBuffer.hook';
-import React, { ReactElement } from 'react';
+import Player from 'models/player/Player.model';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { loadAudioBufferUtil } from 'utils/load-audio-buffer.util';
 
 interface AudioSampleComponentInterface {
   sourceUrl: string;
-  onPlay: (audioBuffer: AudioBuffer) => void;
 }
+const AudioSample = ({ sourceUrl }: AudioSampleComponentInterface): ReactElement => {
+  const { context } = useSelector((state: RootState) => state.audioContext);
 
-const AudioSample = ({ sourceUrl, onPlay }: AudioSampleComponentInterface): ReactElement => {
-  const audioBuffer = useLoadAudioBuffer(sourceUrl);
-  return audioBuffer ?
-    <button onClick={(): void => onPlay(audioBuffer)}>PLAY</button> :
+  const [player, setPlayer] = useState<Player>();
+
+  useEffect((): void => {
+    const loadAudioBuffer = async () => {
+      const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
+      setPlayer(new Player(context, loadedAudioBuffer));
+    }
+    loadAudioBuffer();
+  }, [context, sourceUrl]);
+
+  return player ?
+    <button onClick={() => player?.play()}>TEST</button> :
     <></>;
 };
 

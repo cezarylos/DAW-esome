@@ -1,24 +1,39 @@
-import React from 'react';
-import { playSound } from 'utils/playback.utils';
-import AudioSample from 'components/audio-sample/audio-sample.component';
 import styles from 'App.module.scss';
-
-const audioCtx = new AudioContext();
-export const AppAudioContext = React.createContext<AudioContext>(audioCtx);
+import AudioSample from 'components/audio-sample/audio-sample.component';
+import Player from 'models/player/Player.model';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { loadAudioBufferUtil } from 'utils/load-audio-buffer.util';
 
 function App() {
 
-  const onPlay = (start: number = 0) => (audioBuffer: AudioBuffer): void => {
-    playSound({ context: audioCtx, audioBuffer, start });
+  const { context } = useSelector((state: RootState) => state.audioContext);
+
+  const go = async (): Promise<void> => {
+    const sources = [
+      'samples/Bass.mp3',
+      'samples/Drums.mp3',
+      'samples/Guitar.mp3',
+      'samples/Hammond.mp3',
+      'samples/Vocals.mp3'
+    ];
+    const audioBuffers = await Promise.all(sources.map(async sourceUrl => {
+      return await loadAudioBufferUtil({ context, sourceUrl });
+    }));
+    audioBuffers.forEach((buffer, idx) => {
+      const player = new Player(context, buffer);
+      player.play();
+    });
   };
 
   return (
-    <AppAudioContext.Provider value={audioCtx}>
-      <div className={styles.App}>
-        <AudioSample onPlay={onPlay()} sourceUrl={'samples/Bass.mp3'}/>
-        <AudioSample onPlay={onPlay(20)} sourceUrl={'samples/Bass.mp3'}/>
-      </div>
-    </AppAudioContext.Provider>
+    <div className={styles.App}>
+      <button onClick={go}>GO</button>
+      <AudioSample sourceUrl={'samples/Bass.mp3'}/>
+      <AudioSample sourceUrl={'samples/Guitar.mp3'}/>
+      <AudioSample sourceUrl={'samples/Vocals.mp3'}/>
+    </div>
   );
 }
 
