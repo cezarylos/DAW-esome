@@ -16,12 +16,16 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
   const { context } = useSelector((state: RootState) => state.audioContext);
 
   const [player, setPlayer] = useState<Player>();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect((): void => {
     const loadAudioBuffer = async () => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
       if (loadedAudioBuffer) {
-        setPlayer(new Player(context, loadedAudioBuffer));
+        const dispatchers = {
+          setIsPlaying
+        }
+        setPlayer(new Player(context, loadedAudioBuffer, dispatchers));
       }
     }
     loadAudioBuffer();
@@ -32,7 +36,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
   }
 
   return <div className={styles.container}>
-    <PlayButton onClick={(): void => player.play()}/>
+    <PlayButton onClick={(): void => player.play()} isPlaying={isPlaying}/>
     <span className={styles.name}>{name}</span>
   </div>;
 };
