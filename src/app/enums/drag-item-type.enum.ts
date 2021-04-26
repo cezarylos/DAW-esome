@@ -1,0 +1,4 @@
+export enum DragItemTypeEnum {
+  AUDIO_SAMPLE = 'AUDIO_SAMPLE',
+  AUDIO_TRACK_SAMPLE = 'AUDIO_TRACK_SAMPLE'
+}

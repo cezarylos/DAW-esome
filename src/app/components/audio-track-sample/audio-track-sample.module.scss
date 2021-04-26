@@ -1,0 +1,26 @@
+@import 'src/styles/variables';
+
+.container {
+  height: 14rem;
+  border-radius: 0.8rem;
+  width: 20rem;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  cursor: move;
+  position: absolute;
+  background: #44837D;
+
+  .name {
+    font-family: $font-family-inter;
+    font-size: 1.2rem;
+    color: $white;
+  }
+}
+
+.isDragging {
+  background: $grey-900;
+  opacity: 0;
+  height: 0;
+}

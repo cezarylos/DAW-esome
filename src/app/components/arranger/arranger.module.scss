@@ -1,0 +1,17 @@
+@import 'src/styles/variables';
+
+.arranger {
+  flex: 1;
+  position: relative;
+
+  .droppableArea {
+    flex: 1;
+    height: 100%;
+  }
+
+  .sample {
+    height: 100%;
+    width: 20rem;
+    background: red;
+  }
+}

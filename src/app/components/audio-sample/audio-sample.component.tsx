@@ -1,5 +1,7 @@
 import PlayButton from 'app/components/play-button/play-button.component';
+import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
 import styles from 'app/components/audio-sample/audio-sample.module.scss';
@@ -18,6 +20,20 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
   const [player, setPlayer] = useState<Player>();
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const [{ isDragging }, drag] = useDrag(() => {
+    return {
+      type: DragItemTypeEnum.AUDIO_SAMPLE,
+      item: {
+        type: DragItemTypeEnum.AUDIO_SAMPLE,
+        name,
+        sourceUrl
+      },
+      collect: monitor => ({
+        isDragging: monitor.isDragging(),
+      })
+    }
+  }, [name, sourceUrl])
+
   useEffect((): void => {
     const loadAudioBuffer = async () => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
@@ -35,7 +51,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
     return <></>;
   }
 
-  return <div className={styles.container}>
+  return <div ref={drag} className={styles.container}>
     <PlayButton onClick={(): void => player.play()} isPlaying={isPlaying}/>
     <span className={styles.name}>{name}</span>
   </div>;
