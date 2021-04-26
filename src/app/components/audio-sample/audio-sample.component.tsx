@@ -26,13 +26,13 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
       item: {
         type: DragItemTypeEnum.AUDIO_SAMPLE,
         name,
-        sourceUrl
+        audioBuffer: player?.audioBuffer
       },
       collect: monitor => ({
         isDragging: monitor.isDragging(),
       })
     }
-  }, [name, sourceUrl])
+  }, [name, sourceUrl, player])
 
   useEffect((): void => {
     const loadAudioBuffer = async () => {
@@ -41,7 +41,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
         const dispatchers = {
           setIsPlaying
         }
-        setPlayer(new Player(context, loadedAudioBuffer, dispatchers));
+        setPlayer(new Player(loadedAudioBuffer, context, dispatchers));
       }
     }
     loadAudioBuffer();
@@ -52,7 +52,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
   }
 
   return <div ref={drag} className={styles.container}>
-    <PlayButton onClick={(): void => player.play()} isPlaying={isPlaying}/>
+    <PlayButton onClick={() => player.play()} isPlaying={isPlaying}/>
     <span className={styles.name}>{name}</span>
   </div>;
 };

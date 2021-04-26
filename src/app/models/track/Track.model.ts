@@ -1,7 +1,6 @@
-import EventEmitter from 'events';
 import { Dispatch } from 'react';
 
-class Player extends EventEmitter {
+class Track {
 
   public isPlaying = false;
   public audioBufferSourceNode: AudioBufferSourceNode | undefined;
@@ -9,7 +8,6 @@ class Player extends EventEmitter {
   constructor(public readonly audioBuffer: AudioBuffer,
               private readonly context: AudioContext,
               private readonly dispatchers: Record<string, Dispatch<any>> = {}) {
-    super();
   }
 
   public play(start = 0, offset = 0): void {
@@ -36,7 +34,6 @@ class Player extends EventEmitter {
     const { audioBufferSourceNode } = this;
     audioBufferSourceNode?.addEventListener('ended', (): void => {
       this.stop();
-      this.emit('ended');
     });
   }
 
@@ -46,4 +43,4 @@ class Player extends EventEmitter {
   }
 }
 
-export default Player;
+export default Track;

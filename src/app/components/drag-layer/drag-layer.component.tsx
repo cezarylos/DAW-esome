@@ -31,8 +31,6 @@ function getItemStyles(
 
   let { x, y } = currentOffset;
 
-  console.log(currentOffset);
-
   if (isSnapToGrid) {
     x -= initialOffset.x;
     y -= initialOffset.y
@@ -74,7 +72,7 @@ const DragLayer = (props: any): ReactElement => {
   return (
     <div style={layerStyles}>
       <div style={getItemStyles(initialOffset, currentOffset, props.snapToGrid)}>
-        <AudioTrackSample name={item.name} offsetX={0} id={item.id}/>
+        {/*<AudioTrackSample name={item.name} offsetX={0} id={item.id}/>*/}
       </div>
     </div>
   );

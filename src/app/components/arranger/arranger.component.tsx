@@ -16,7 +16,7 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
   const [, drop] = useDrop(() => ({
     accept: [DragItemTypeEnum.AUDIO_SAMPLE, DragItemTypeEnum.AUDIO_TRACK_SAMPLE],
     drop: (item: AudioTrackSampleComponentInterface, monitor): void => {
-      const { id, name, type } = item;
+      const { id, name, type, audioBuffer } = item;
 
       const delta = monitor.getSourceClientOffset() as {
         x: number
@@ -27,7 +27,13 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
 
       let updatedSamples;
       if (type === DragItemTypeEnum.AUDIO_SAMPLE) {
-        updatedSamples = [...samples, { offsetX, id: v4(), name }];
+        const sample = {
+          offsetX,
+          id: v4(),
+          name,
+          audioBuffer
+        }
+        updatedSamples = [...samples, sample];
       } else {
         updatedSamples = samples.map(sample => sample.id === id ? { ...sample, offsetX } : sample);
       }
@@ -39,8 +45,14 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
     <>
       <div ref={arrangerRef} className={styles.arranger}>
         <div ref={drop} className={styles.droppableArea}>
-          {samples.map(({ id, offsetX, name }): ReactElement =>
-            <AudioTrackSample key={id} id={id} name={name} offsetX={offsetX}/>)}
+          {samples.map(({ id, offsetX, name, audioBuffer }): ReactElement =>
+            <AudioTrackSample
+              key={id}
+              id={id}
+              name={name}
+              audioBuffer={audioBuffer}
+              offsetX={offsetX}
+            />)}
         </div>
       </div>
       {/*<DragLayer/>*/}
