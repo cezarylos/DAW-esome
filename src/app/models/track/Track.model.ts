@@ -1,45 +1,42 @@
-import { Dispatch } from 'react';
+import { AudioTrackSampleComponentInterface } from 'app/components/audio-track-sample/audio-track-sample.component';
+import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
+import { PlayerEventsEnum } from 'app/enums/player-events.enum';
+import Player from 'app/models/player/Player.model';
+import EventEmitter from 'events';
 
-class Track {
+class Track extends EventEmitter {
 
   public isPlaying = false;
-  public audioBufferSourceNode: AudioBufferSourceNode | undefined;
+  private players: Player[] = [];
 
-  constructor(public readonly audioBuffer: AudioBuffer,
-              private readonly context: AudioContext,
-              private readonly dispatchers: Record<string, Dispatch<any>> = {}) {
+  constructor(private readonly samples: AudioTrackSampleComponentInterface[],
+              private readonly context: AudioContext) {
+    super();
   }
 
-  public play(start = 0, offset = 0): void {
-    const { context, audioBuffer, isPlaying } = this;
+  public play(): void {
+    const { samples, context, isPlaying } = this;
     if (isPlaying) {
       this.stop();
       return;
     }
-    const source = context.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(context.destination);
-    source.start(context.currentTime + start, 0);
+    this.players = samples.map(({ audioBuffer, offsetX = 0 }) => {
+      const player = new Player(audioBuffer, context);
+      player.play(offsetX / TIMELINE_SCALE);
+      return player;
+    })
     this.setIsPlaying(true);
-    this.audioBufferSourceNode = source;
-    this.listenToEndPlaybackEvent();
   }
 
   public stop(): void {
-    this.audioBufferSourceNode?.stop();
+    const { players } = this;
+    players.forEach(player => player.stop());
     this.setIsPlaying(false);
-  }
-
-  private listenToEndPlaybackEvent(): void {
-    const { audioBufferSourceNode } = this;
-    audioBufferSourceNode?.addEventListener('ended', (): void => {
-      this.stop();
-    });
   }
 
   private setIsPlaying(isPlaying: boolean): void {
     this.isPlaying = isPlaying;
-    this.dispatchers.setIsPlaying?.(isPlaying);
+    this.emit(PlayerEventsEnum.IS_PLAYING, { isPlaying });
   }
 }
 

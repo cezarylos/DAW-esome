@@ -1,5 +1,5 @@
+import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import EventEmitter from 'events';
-import { Dispatch } from 'react';
 
 class Player extends EventEmitter {
 
@@ -7,8 +7,7 @@ class Player extends EventEmitter {
   public audioBufferSourceNode: AudioBufferSourceNode | undefined;
 
   constructor(public readonly audioBuffer: AudioBuffer,
-              private readonly context: AudioContext,
-              private readonly dispatchers: Record<string, Dispatch<any>> = {}) {
+              private readonly context: AudioContext) {
     super();
   }
 
@@ -36,13 +35,12 @@ class Player extends EventEmitter {
     const { audioBufferSourceNode } = this;
     audioBufferSourceNode?.addEventListener('ended', (): void => {
       this.stop();
-      this.emit('ended');
     });
   }
 
   private setIsPlaying(isPlaying: boolean): void {
     this.isPlaying = isPlaying;
-    this.dispatchers.setIsPlaying?.(isPlaying);
+    this.emit(PlayerEventsEnum.IS_PLAYING, { isPlaying });
   }
 }
 
