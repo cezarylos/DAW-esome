@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { audioContext } from 'app/store/slices/audio-context.slice';
 import { playbackController } from 'app/store/slices/playback-controller.slice';
+import { trackContainer } from 'app/store/slices/track-container.slice';
 
 const store =  configureStore({
   reducer: {
-    audioContext: audioContext.reducer,
-    playbackController: playbackController.reducer
+    playbackController: playbackController.reducer,
+    trackContainer: trackContainer.reducer,
   },
 })
 

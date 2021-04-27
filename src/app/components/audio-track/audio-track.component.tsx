@@ -1,17 +1,17 @@
 import Arranger from 'app/components/arranger/arranger.component';
-import { AudioTrackSampleComponentInterface } from 'app/components/audio-track-sample/audio-track-sample.component';
 import styles from 'app/components/audio-track/audio-track.module.scss';
+import DragLayer from 'app/components/drag-layer/drag-layer.component';
 import PlayButton from 'app/components/play-button/play-button.component';
+import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
+import { AudioTrackSampleInterface } from 'app/interfaces';
 import Track from 'app/models/track/Track.model';
-import { RootState } from 'app/store/store';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 
 const AudioTrack = (): ReactElement => {
-  const { context } = useSelector((state: RootState) => state.audioContext);
+  const context = useContext(AppAudioContext);
 
-  const [samples, setSamples] = useState<AudioTrackSampleComponentInterface[]>([]);
+  const [samples, setSamples] = useState<AudioTrackSampleInterface[]>([]);
   const [track, setTrack] = useState<Track>();
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -21,12 +21,19 @@ const AudioTrack = (): ReactElement => {
     setTrack(trackInstance);
   }, [samples, context]);
 
+  useEffect((): () => void => {
+    return (): void => {
+      track?.removeAllListeners();
+    }
+  }, [track]);
+
   return (
     <div className={styles.container}>
       <div className={styles.options}>
         <PlayButton onClick={() => track?.play()} isPlaying={isPlaying}/>
       </div>
       <Arranger samples={samples} setSamples={setSamples}/>
+      <DragLayer/>
     </div>
   );
 };

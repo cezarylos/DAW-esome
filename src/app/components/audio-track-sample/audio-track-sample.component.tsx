@@ -1,51 +1,41 @@
+import styles from 'app/components/audio-track-sample/audio-track-sample.module.scss';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import Player from 'app/models/player/Player.model';
-import React, { CSSProperties, ReactElement, useMemo } from 'react';
+import { AudioTrackSampleInterface } from 'app/interfaces';
+import React, { CSSProperties, ReactElement, useEffect, useMemo } from 'react';
 import { useDrag } from 'react-dnd';
-import classnames from 'classnames';
-import { uuid } from 'uuidv4';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import styles from 'app/components/audio-track-sample/audio-track-sample.module.scss';
-
-function getStyles(
-  offsetX: number,
-  width: number
-): CSSProperties {
-  const transform = `translate3d(${offsetX}px, 0, 0)`
+const getStyles = (start: number, width: number): CSSProperties => {
+  const transform = `translate3d(${start}px, 0, 0)`;
   return {
     width,
     transform,
     WebkitTransform: transform
-  }
+  };
 }
 
-export interface AudioTrackSampleComponentInterface {
-  name: string;
-  audioBuffer: AudioBuffer;
-  id: string;
-  offsetX?: number;
-  type?: DragItemTypeEnum;
-}
-
-const AudioTrackSample = ({ name, offsetX = 0, id, audioBuffer }: AudioTrackSampleComponentInterface): ReactElement => {
+const AudioTrackSample = ({ id, name, audioBuffer, start = 0 }: AudioTrackSampleInterface): ReactElement => {
 
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
-  }, [audioBuffer])
+  }, [audioBuffer]);
 
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [, drag, preview] = useDrag(() => ({
     type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE,
     item: {
       type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE,
-      id
-    },
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
-  }));
+      id,
+      audioBuffer,
+      name
+    }
+  }), [name, start, id, audioBuffer]);
 
-  return <div ref={drag} className={classnames(styles.container, isDragging && styles.isDragging)} style={getStyles(offsetX, width)}>
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, [preview]);
+
+  return <div ref={drag} className={styles.container} style={getStyles(start, width)}>
     <span className={styles.name}>{name}</span>
   </div>;
 };

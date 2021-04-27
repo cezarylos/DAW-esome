@@ -6,18 +6,21 @@ import styles from 'app/App.module.scss';
 import AudioTrack from 'app/components/audio-track/audio-track.component';
 import Navbar from 'app/views/navbar/navbar.component';
 import Stencil from 'app/views/stencil/stencil.component';
+import { AppAudioContext } from './context/audio.context';
 
 const App = (): ReactElement =>
-  <div className={styles.container}>
-    <Navbar/>
-    <DndProvider backend={HTML5Backend}>
-      <div className={styles.main}>
-        <Stencil/>
-        <div className={styles.tracks}>
-          <AudioTrack/>
+  <AppAudioContext.Provider value={new AudioContext()}>
+    <div className={styles.container}>
+      <Navbar/>
+      <DndProvider backend={HTML5Backend}>
+        <div className={styles.main}>
+          <Stencil/>
+          <div className={styles.tracks}>
+            <AudioTrack/>
+          </div>
         </div>
-      </div>
-    </DndProvider>
-  </div>;
+      </DndProvider>
+    </div>
+  </AppAudioContext.Provider>;
 
 export default App;

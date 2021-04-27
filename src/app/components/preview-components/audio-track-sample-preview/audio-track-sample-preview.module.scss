@@ -10,9 +10,13 @@
   align-items: flex-end;
   cursor: move;
   position: absolute;
-  background: #44837D;
+  background: $grey-900;
+  opacity: 0.1;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 
-  .name {
+  .marker {
     font-family: $font-family-inter;
     font-size: 1.2rem;
     color: $white;

@@ -1,27 +1,23 @@
+import { AudioSampleComponentPropsInterface } from 'app/components/audio-sample/audio-sample.interface';
 import styles from 'app/components/audio-sample/audio-sample.module.scss';
 import PlayButton from 'app/components/play-button/play-button.component';
+import { AppAudioContext } from 'app/context/audio.context';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import Player from 'app/models/player/Player.model';
-import { RootState } from 'app/store/store';
-
 import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
-interface AudioSampleComponentInterface {
-  name: string;
-  sourceUrl: string;
-}
-
-const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactElement => {
-  const { context } = useSelector((state: RootState) => state.audioContext);
+const AudioSample = ({ name, sourceUrl }: AudioSampleComponentPropsInterface): ReactElement => {
+  const context = useContext(AppAudioContext);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const [player, setPlayer] = useState<Player>();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const [{ isDragging }, drag] = useDrag(() => {
+  const [, drag, preview] = useDrag(() => {
     return {
       type: DragItemTypeEnum.AUDIO_SAMPLE,
       item: {
@@ -32,26 +28,30 @@ const AudioSample = ({ name, sourceUrl }: AudioSampleComponentInterface): ReactE
       collect: monitor => ({
         isDragging: monitor.isDragging(),
       })
-    }
-  }, [name, sourceUrl, player])
+    };
+  }, [name, sourceUrl, player, ref.current]);
+
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, [preview]);
 
   useEffect((): void => {
     const loadAudioBuffer = async () => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
       if (loadedAudioBuffer) {
-        const playerInstance = new Player(loadedAudioBuffer, context)
+        const playerInstance = new Player(loadedAudioBuffer, context);
         playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
         setPlayer(playerInstance);
       }
-    }
+    };
     loadAudioBuffer();
   }, [context, sourceUrl]);
 
   useEffect((): () => void => {
     return (): void => {
       player?.removeAllListeners();
-    }
-  }, [player])
+    };
+  }, [player]);
 
   if (!player) {
     return <></>;
