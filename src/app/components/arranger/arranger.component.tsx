@@ -33,10 +33,10 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
     if (!arrangerRef.current) {
       return;
     }
-    const { top, bottom, left, right } = arrangerRef.current.getBoundingClientRect()
-    const container: TrackContainerInterface = { top, bottom, left, right , id: v4() };
+    const { top, bottom, left, right } = arrangerRef.current.getBoundingClientRect();
+    const container: TrackContainerInterface = { top, bottom, left, right, id: v4() };
     dispatch(addTrackContainer(container));
-  }, [arrangerRef, dispatch])
+  }, [arrangerRef, dispatch]);
 
 
   const [, drop] = useDrop(() => ({

@@ -6,7 +6,7 @@ import React, { ReactElement } from 'react';
 const AudioSamplePreview = ({ name }: any): ReactElement => {
 
   return <div className={classNames(styles.container)}>
-    <PlayButton onClick={() => void (0)}/>
+    <PlayButton isPreview/>
     <span className={styles.name}>{name}</span>
   </div>;
 };

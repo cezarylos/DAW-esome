@@ -1,4 +1,5 @@
 export interface PlayButtonPropsInterface {
-  onClick: () => void;
+  onClick?: () => void;
   isPlaying?: boolean;
+  isPreview?: boolean;
 }

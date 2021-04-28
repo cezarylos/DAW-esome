@@ -4,6 +4,7 @@
   display: flex;
   flex-flow: column;
   height: 100vh;
+  overflow-y: hidden;
 
   .main {
     display: flex;

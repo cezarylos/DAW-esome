@@ -9,7 +9,6 @@
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  outline: red;
 
   img {
     width: 1rem;
@@ -19,4 +18,8 @@
   .stop {
     width: 2rem;
   }
+}
+
+.isPreview {
+  background: $orange;
 }

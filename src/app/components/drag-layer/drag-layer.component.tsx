@@ -1,16 +1,17 @@
 import AudioSamplePreview from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.component';
 import AudioTrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
+import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackContainerInterface } from 'app/interfaces/track-container.interface';
 import { RootState } from 'app/store/store';
-import { CSSProperties, ReactElement } from 'react';
+import { CSSProperties, ReactElement, useMemo } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
 export function snapToGrid(x: number, y: number): [number, number] {
-  const snappedX = Math.round(x / 32) * 32
-  const snappedY = Math.round(y / 32) * 32
-  return [snappedX, snappedY]
+  const snappedX = Math.round(x / 32) * 32;
+  const snappedY = Math.round(y / 32) * 32;
+  return [snappedX, snappedY];
 }
 
 const layerStyles: CSSProperties = {
@@ -50,16 +51,30 @@ function getItemStyles(
   } as any;
 }
 
-const isInsideTrack = (x: number, y: number, container: TrackContainerInterface): boolean => {
-  const isXInside = x > container.left && x < container.right;
-  const isYInside = y + 28 > container.top && y + 28 < container.bottom;
+const isInsideTrack = ({ x, y, container }: IsInsideTrackInterface): boolean => {
+  const MARGIN = TIMELINE_SCALE;
+  const { left, right, top, bottom } = container;
+  const isXInside = x > left - MARGIN && x < right + MARGIN;
+  const isYInside = y + 28 > top && y + 28 < bottom;
   return isXInside && isYInside;
+};
+
+interface GetPreviewMarkerInterface {
+  x: number;
+  y: number;
+  containers: TrackContainerInterface[];
 }
 
-const getStartPoint = (x: number = 0, y: number = 0, containers: TrackContainerInterface[]): number => {
-  const matchingContainer = containers.find(container => isInsideTrack(x, y, container));
-  return matchingContainer ? x - matchingContainer.left : 0;
+interface IsInsideTrackInterface {
+  x: number;
+  y: number;
+  container: TrackContainerInterface;
 }
+
+const getPreviewMarker = ({ x, y, containers }: GetPreviewMarkerInterface): number | undefined => {
+  const matchingContainer = containers.find(container => isInsideTrack({ x, y, container }));
+  return matchingContainer ? x - matchingContainer.left : undefined;
+};
 
 export interface CustomDragLayerProps {
   snapToGrid: boolean
@@ -81,6 +96,16 @@ const DragLayer = (props: any): ReactElement => {
     isDragging: monitor.isDragging()
   }));
 
+  const previewMarker = useMemo((): number | void => {
+    if (!currentOffset) {
+      return;
+    }
+    const { x, y } = currentOffset;
+    return getPreviewMarker({ x, y, containers });
+  }, [currentOffset, containers]);
+
+  console.log(previewMarker);
+
   if (!isDragging) {
     return <></>;
   }
@@ -89,13 +114,11 @@ const DragLayer = (props: any): ReactElement => {
       <div style={getItemStyles(initialOffset, currentOffset)}>
         <>
           {itemType === DragItemTypeEnum.AUDIO_SAMPLE && <AudioSamplePreview name={item.name}/>}
-          {!!getStartPoint(currentOffset?.x, currentOffset?.y, containers) &&
-            <AudioTrackSamplePreview type={item.type} audioBuffer={item.audioBuffer} previewMarker={getStartPoint(currentOffset?.x, currentOffset?.y, containers)}/>
-          }
+          {previewMarker >= 0 && <AudioTrackSamplePreview type={item.type} audioBuffer={item.audioBuffer} previewMarker={previewMarker}/>}
         </>
-        </div>
+      </div>
     </div>
   );
 };
 
-export default DragLayer
+export default DragLayer;

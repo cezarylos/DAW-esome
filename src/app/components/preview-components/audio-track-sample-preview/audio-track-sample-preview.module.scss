@@ -7,18 +7,21 @@
   padding: 1.2rem;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: flex-start;
   cursor: move;
   position: absolute;
-  background: $grey-900;
-  opacity: 0.1;
+  background: rgba(17, 24, 39, 0.1);
   top: 0;
   bottom: 0;
-  margin: auto;
 
   .marker {
     font-family: $font-family-inter;
-    font-size: 1.2rem;
-    color: $white;
+    font-size: 1rem;
+    color: $orange;
   }
+}
+
+.alreadyOnTrack {
+  margin: auto;
+  //left: 5rem;
 }
