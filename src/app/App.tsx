@@ -1,3 +1,4 @@
+import DragLayer from 'app/components/drag-layer/drag-layer.component';
 import React, { ReactElement } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -17,6 +18,7 @@ const App = (): ReactElement =>
           <Stencil/>
           <div className={styles.tracks}>
             <AudioTrack/>
+            <DragLayer/>
           </div>
         </div>
       </DndProvider>

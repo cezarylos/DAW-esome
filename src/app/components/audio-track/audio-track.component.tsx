@@ -1,6 +1,5 @@
 import Arranger from 'app/components/arranger/arranger.component';
 import styles from 'app/components/audio-track/audio-track.module.scss';
-import DragLayer from 'app/components/drag-layer/drag-layer.component';
 import PlayButton from 'app/components/play-button/play-button.component';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
@@ -33,7 +32,6 @@ const AudioTrack = (): ReactElement => {
         <PlayButton onClick={() => track?.play()} isPlaying={isPlaying}/>
       </div>
       <Arranger samples={samples} setSamples={setSamples}/>
-      <DragLayer/>
     </div>
   );
 };

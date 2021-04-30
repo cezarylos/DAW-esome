@@ -3,22 +3,13 @@ import AudioTrackSample from 'app/components/audio-track-sample/audio-track-samp
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { AudioTrackSampleInterface } from 'app/interfaces';
 import { TrackContainerInterface } from 'app/interfaces/track-container.interface';
+import { addTrackContainer } from 'app/store/slices/track-container.slice';
+import { getDragOffset } from 'app/utils/get-drag-offset.util';
 import React, { Dispatch, ReactElement, useEffect, useRef } from 'react';
 import { useDrop } from 'react-dnd';
+import { XYCoord } from 'react-dnd/dist/types/types/monitors';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
-import { addTrackContainer } from 'app/store/slices/track-container.slice';
-
-export const BOX = {
-  x: 502,
-  y: 109,
-  width: 1406,
-  height: 140,
-  top: 109,
-  right: 1908,
-  bottom: 249,
-  left: 502
-};
 
 interface ArrangerComponentPropsInterface {
   samples: AudioTrackSampleInterface[];
@@ -43,32 +34,21 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
     accept: [DragItemTypeEnum.AUDIO_SAMPLE, DragItemTypeEnum.AUDIO_TRACK_SAMPLE],
     drop: (item: AudioTrackSampleInterface, monitor): void => {
       const { id, name, audioBuffer } = item;
-      const type = monitor.getItemType();
-
-      const delta = monitor.getSourceClientOffset() as {
-        x: number
-        y: number
-      };
-
+      const type = monitor.getItemType() as DragItemTypeEnum;
+      const delta = monitor.getSourceClientOffset() as XYCoord;
       const containerRect = arrangerRef.current?.getBoundingClientRect();
       if (!containerRect) {
         return;
       }
 
-      const start = delta.x - containerRect.x;
-
+      const start = delta.x - containerRect.x + getDragOffset(type);
       if (start < 0) {
         return;
       }
 
       let updatedSamples;
       if (type === DragItemTypeEnum.AUDIO_SAMPLE) {
-        const sample = {
-          start,
-          id: v4(),
-          name,
-          audioBuffer
-        };
+        const sample = { start, id: v4(), name, audioBuffer };
         updatedSamples = [...samples, sample];
       } else {
         updatedSamples = samples.map(sample => sample.id === id ? { ...sample, start } : sample);
@@ -77,10 +57,17 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
     }
   }), [samples]);
 
+  const test = (): void => {
+    const updatedSamples = samples.map(sample => {
+      return {...sample, start: 0};
+    });
+    setSamples(updatedSamples);
+  }
+
   return (
     <>
       <div ref={arrangerRef} className={styles.arranger}>
-        <div ref={drop} className={styles.droppableArea}>
+        <div onDoubleClick={test} ref={drop} className={styles.droppableArea}>
           {samples.map(({ id, start, name, audioBuffer }): ReactElement =>
             <AudioTrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start}/>)}
         </div>
