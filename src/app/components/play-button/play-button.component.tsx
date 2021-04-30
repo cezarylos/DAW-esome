@@ -10,9 +10,13 @@ import stop from 'assets/images/stop.svg';
 const PlayButton = ({
   onClick,
   isPlaying = false,
-  isPreview
+  isPreview,
+  className
 }: PlayButtonPropsInterface): ReactElement => (
-  <div className={classNames(styles.container, isPreview && styles.isPreview)} onClick={onClick}>
+  <div
+    className={classNames(styles.container, isPreview && styles.isPreview, className)}
+    onClick={onClick}
+  >
     {isPreview ? (
       <img src={play_light} alt="play" />
     ) : (

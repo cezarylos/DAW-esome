@@ -14,6 +14,7 @@ const Track = (): ReactElement => {
   const [samples, setSamples] = useState<TrackSampleInterface[]>([]);
   const [track, setTrack] = useState<TrackModel>();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [trackName, setTrackName] = useState('');
 
   useEffect((): void => {
     const trackInstance = new TrackModel(samples, context);
@@ -32,7 +33,20 @@ const Track = (): ReactElement => {
   return (
     <div className={styles.container}>
       <div className={styles.options}>
-        <PlayButton onClick={() => track?.play()} isPlaying={isPlaying} />
+        <input
+          onChange={event => setTrackName(event.target.value)}
+          value={trackName}
+          placeholder={'Track Name'}
+          className={styles.trackName}
+        />
+        <button className={styles.saveButton}>
+          <span>Save</span>
+        </button>
+        <PlayButton
+          className={styles.playButton}
+          onClick={() => track?.play()}
+          isPlaying={isPlaying}
+        />
       </div>
       <Arranger samples={samples} setSamples={setSamples} />
     </div>

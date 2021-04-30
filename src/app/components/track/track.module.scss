@@ -1,18 +1,57 @@
 @import 'src/styles/variables';
+@import 'src/styles/mixins';
 
 .container {
   height: 14rem;
   width: 100%;
   background: $grey-100;
   display: flex;
+
   margin-bottom: 4rem;
+  border-radius: 0.8rem;
 
   .options {
+    padding: 1.2rem;
     width: 14rem;
     height: 100%;
     background: $white;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    border-top-left-radius: 0.8rem;
+    border-bottom-left-radius: 0.8rem;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+
+    .trackName {
+      @include fontInter(1.4rem);
+      margin-bottom: 0.4rem;
+      width: 100%;
+      border: none;
+      outline: none;
+    }
+
+    .saveButton {
+      width: 4.4rem;
+      height: 2.3rem;
+      border-radius: 2.3rem;
+      background: $grey-200;
+      border: none;
+      outline: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      span {
+        @include fontInter(1.2rem);
+        color: $silver;
+      }
+    }
+
+    .playButton {
+      position: absolute;
+      bottom: 1.2rem;
+    }
   }
 }

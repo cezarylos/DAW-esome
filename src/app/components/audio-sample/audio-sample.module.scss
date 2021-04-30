@@ -1,4 +1,5 @@
 @import 'src/styles/variables';
+@import 'src/styles/mixins';
 
 .container {
   background: $grey-100;
@@ -13,9 +14,7 @@
   cursor: move;
 
   .name {
-    font-family: $font-family-inter;
-    font-weight: 500;
-    font-size: 1.4rem;
+    @include fontInter(1.4rem);
     color: $grey-800;
     margin-left: 1.2rem;
   }

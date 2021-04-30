@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactElement, useEffect, useRef } from 'react';
+import React, { Dispatch, ReactElement, useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { XYCoord } from 'react-dnd/dist/types/types/monitors';
 import { useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 
 import styles from 'app/components/arranger/arranger.module.scss';
 import TrackSample from 'app/components/track-sample/track-sample.component';
+import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import { TrackContainerInterface } from 'app/interfaces';
@@ -18,16 +19,20 @@ interface ArrangerPropsInterface {
 }
 
 const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement => {
-  const arrangerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const arrangerRef = useRef<HTMLDivElement | null>(null);
+  const [linesCount, setLinesCount] = useState<number[]>([]);
 
   useEffect((): void => {
     if (!arrangerRef.current) {
       return;
     }
-    const { top, bottom, left, right } = arrangerRef.current.getBoundingClientRect();
+    const { top, bottom, left, right, width } = arrangerRef.current.getBoundingClientRect();
     const container: TrackContainerInterface = { top, bottom, left, right, id: v4() };
     dispatch(addTrackContainer(container));
+    const roundedCount = Math.ceil(width / TIMELINE_SCALE);
+    const countArray = Array.from(Array(roundedCount).keys());
+    setLinesCount(countArray);
   }, [arrangerRef, dispatch]);
 
   const [, drop] = useDrop(
@@ -66,6 +71,14 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
     <>
       <div ref={arrangerRef} className={styles.arranger}>
         <div ref={drop} className={styles.droppableArea}>
+          {linesCount.map(count => (
+            <div
+              key={count}
+              className={styles.verticalLine}
+              style={{ left: count * TIMELINE_SCALE }}
+            />
+          ))}
+          {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
             ({ id, start, name, audioBuffer }): ReactElement => (
               <TrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start} />

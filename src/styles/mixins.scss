@@ -1,0 +1,7 @@
+@import 'src/styles/variables';
+
+@mixin fontInter($size) {
+  font-size: $size;
+  font-family: $font-family-inter;
+  font-weight: 500;
+}
