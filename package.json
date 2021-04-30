@@ -54,10 +54,10 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "format"
+      "pre-commit": "lint-staged"
     }
   },
-  "format": {
+  "lint-staged": {
     "src/**/*.{ts,tsx,scss}": [
       "prettier --write"
     ]
