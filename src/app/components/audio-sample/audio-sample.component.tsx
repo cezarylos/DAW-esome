@@ -1,3 +1,7 @@
+import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
+import { useDrag } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
+
 import { AudioSamplePropsInterface } from 'app/components/audio-sample/audio-sample.interface';
 import styles from 'app/components/audio-sample/audio-sample.module.scss';
 import PlayButton from 'app/components/play-button/play-button.component';
@@ -6,9 +10,6 @@ import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import PlayerModel from 'app/models/player/Player.model';
 import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
-import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
-import { useDrag } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
 
 const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactElement => {
   const context = useContext(AppAudioContext);
@@ -26,7 +27,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
         audioBuffer: player?.audioBuffer
       },
       collect: monitor => ({
-        isDragging: monitor.isDragging(),
+        isDragging: monitor.isDragging()
       })
     };
   }, [name, sourceUrl, player, ref.current]);
@@ -40,14 +41,16 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
       if (loadedAudioBuffer) {
         const playerInstance = new PlayerModel(loadedAudioBuffer, context);
-        playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
+        playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) =>
+          setIsPlaying(isPlaying)
+        );
         setPlayer(playerInstance);
       }
     };
     loadAudioBuffer();
   }, [context, sourceUrl]);
 
-  useEffect((): () => void => {
+  useEffect((): (() => void) => {
     return (): void => {
       player?.removeAllListeners();
     };
@@ -57,10 +60,12 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
     return <></>;
   }
 
-  return <div ref={drag} className={styles.container}>
-    <PlayButton onClick={() => player?.play()} isPlaying={isPlaying}/>
-    <span className={styles.name}>{name}</span>
-  </div>;
+  return (
+    <div ref={drag} className={styles.container}>
+      <PlayButton onClick={() => player?.play()} isPlaying={isPlaying} />
+      <span className={styles.name}>{name}</span>
+    </div>
+  );
 };
 
 export default AudioSample;

@@ -1,8 +1,9 @@
+import EventEmitter from 'events';
+
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import PlayerModel from 'app/models/player/Player.model';
-import EventEmitter from 'events';
 
 class TrackModel extends EventEmitter {
   public isPlaying = false;

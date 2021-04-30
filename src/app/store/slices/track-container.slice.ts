@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { TrackContainerInterface } from 'app/interfaces';
 import { RootState } from 'app/store/store';
 
@@ -10,7 +11,10 @@ export const trackContainer = createSlice({
     containers: [] as TrackContainerInterface[]
   },
   reducers: {
-    addTrackContainer: (state: SliceState, { payload }: PayloadAction<TrackContainerInterface>): void => {
+    addTrackContainer: (
+      state: SliceState,
+      { payload }: PayloadAction<TrackContainerInterface>
+    ): void => {
       state.containers = [...state.containers, payload];
     },
     removeTrackContainer: (state: SliceState, { payload }: PayloadAction<string>): void => {

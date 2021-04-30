@@ -1,9 +1,10 @@
+import { CSSProperties } from 'react';
+import { XYCoord } from 'react-dnd';
+
 import { getPreviewPositionDataInterface } from 'app/components/drag-layer/drag-layer.interface';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { TrackContainerInterface } from 'app/interfaces';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
-import { CSSProperties } from 'react';
-import { XYCoord } from 'react-dnd';
 
 export const dragLayerPreviewStyles = (
   initialOffset: XYCoord | null,

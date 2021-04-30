@@ -1,5 +1,6 @@
-import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import EventEmitter from 'events';
+
+import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 
 class PlayerModel extends EventEmitter {
   public isPlaying = false;

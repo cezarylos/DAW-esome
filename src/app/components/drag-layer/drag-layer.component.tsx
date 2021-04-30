@@ -1,13 +1,18 @@
+import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useDragLayer } from 'react-dnd';
+import { useSelector } from 'react-redux';
+
 import { PreviewRef } from 'app/components/drag-layer/drag-layer.interface';
 import styles from 'app/components/drag-layer/drag-layer.module.scss';
-import { dragLayerPreviewStyles, getPreviewPositionData, PreviewPositionData } from 'app/components/drag-layer/drag-layer.utils';
+import {
+  dragLayerPreviewStyles,
+  getPreviewPositionData,
+  PreviewPositionData
+} from 'app/components/drag-layer/drag-layer.utils';
 import AudioSamplePreview from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.component';
 import TrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { selectContainers } from 'app/store/slices/track-container.slice';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
-import { useDragLayer } from 'react-dnd';
-import { useSelector } from 'react-redux';
 
 const DragLayer = (): ReactElement => {
   const containers = useSelector(selectContainers);
@@ -20,13 +25,7 @@ const DragLayer = (): ReactElement => {
     setPreviewRef(ref.element);
   }, []);
 
-  const {
-    itemType,
-    isDragging,
-    item,
-    initialOffset,
-    currentOffset,
-  } = useDragLayer((monitor) => ({
+  const { itemType, isDragging, item, initialOffset, currentOffset } = useDragLayer(monitor => ({
     item: monitor.getItem(),
     itemType: monitor.getItemType() as DragItemTypeEnum,
     initialOffset: monitor.getInitialSourceClientOffset(),
@@ -51,11 +50,17 @@ const DragLayer = (): ReactElement => {
     <div className={styles.layer}>
       <div style={dragLayerPreviewStyles(initialOffset, currentOffset)}>
         <>
-          {itemType === DragItemTypeEnum.AUDIO_SAMPLE && <AudioSamplePreview setRef={setRef} name={item.name}/>}
-          {previewPositionData?.isInsideTrack &&
-          <TrackSamplePreview setRef={setRef} type={item.type} audioBuffer={item.audioBuffer}
-                                   previewTimestamp={previewPositionData?.previewTimestamp}/>
-          }
+          {itemType === DragItemTypeEnum.AUDIO_SAMPLE && (
+            <AudioSamplePreview setRef={setRef} name={item.name} />
+          )}
+          {previewPositionData?.isInsideTrack && (
+            <TrackSamplePreview
+              setRef={setRef}
+              type={item.type}
+              audioBuffer={item.audioBuffer}
+              previewTimestamp={previewPositionData?.previewTimestamp}
+            />
+          )}
         </>
       </div>
     </div>

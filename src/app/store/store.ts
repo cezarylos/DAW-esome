@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+
 import { playbackController } from 'app/store/slices/playback-controller.slice';
 import { trackContainer } from 'app/store/slices/track-container.slice';
 

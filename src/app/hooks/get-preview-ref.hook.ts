@@ -1,5 +1,6 @@
-import { UseGetPreviewRefHookInterface } from 'app/interfaces';
 import { RefObject, useEffect, useRef } from 'react';
+
+import { UseGetPreviewRefHookInterface } from 'app/interfaces';
 
 export const useGetPreviewRefHook = ({
   setRef,
