@@ -14,8 +14,8 @@ export const playbackController = createSlice({
       state.isStoppedAllSounds = true;
     }
   }
-})
+});
 
-export const { setIsMainTrackPlaying } = playbackController.actions
+export const { setIsMainTrackPlaying } = playbackController.actions;
 
-export default playbackController.reducer
+export default playbackController.reducer;

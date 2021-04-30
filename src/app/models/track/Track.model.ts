@@ -5,13 +5,14 @@ import Player from 'app/models/player/Player.model';
 import EventEmitter from 'events';
 
 class Track extends EventEmitter {
-
   public isPlaying = false;
   private players: Player[] = [];
-  private currentlyPlaying: string[] = []
+  private currentlyPlaying: string[] = [];
 
-  constructor(private readonly samples: AudioTrackSampleInterface[],
-              private readonly context: AudioContext) {
+  constructor(
+    private readonly samples: AudioTrackSampleInterface[],
+    private readonly context: AudioContext
+  ) {
     super();
   }
 
@@ -27,7 +28,7 @@ class Track extends EventEmitter {
       this.currentlyPlaying.push(id);
       this.listenToEndPlaybackEvent(player, id);
       return player;
-    })
+    });
     this.setIsPlaying(true);
   }
 
@@ -40,9 +41,11 @@ class Track extends EventEmitter {
 
   private listenToEndPlaybackEvent(player: Player, id: string): void {
     player.audioBufferSourceNode?.addEventListener('ended', (): void => {
-      this.currentlyPlaying = this.currentlyPlaying.filter(currentlyPlayingId => currentlyPlayingId !== id);
-      this.setIsPlaying(!!this.currentlyPlaying.length)
-    })
+      this.currentlyPlaying = this.currentlyPlaying.filter(
+        currentlyPlayingId => currentlyPlayingId !== id
+      );
+      this.setIsPlaying(!!this.currentlyPlaying.length);
+    });
   }
 
   private setIsPlaying(isPlaying: boolean): void {

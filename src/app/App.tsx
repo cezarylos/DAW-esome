@@ -9,19 +9,20 @@ import Navbar from 'app/views/navbar/navbar.component';
 import Stencil from 'app/views/stencil/stencil.component';
 import { AppAudioContext } from './context/audio.context';
 
-const App = (): ReactElement =>
+const App = (): ReactElement => (
   <AppAudioContext.Provider value={new AudioContext()}>
     <div className={styles.container}>
-      <Navbar/>
+      <Navbar />
       <DndProvider backend={HTML5Backend}>
         <div className={styles.main}>
-          <Stencil/>
+          <Stencil />
           <div className={styles.tracks}>
-            <AudioTrack/>
-            <DragLayer/>
+            <AudioTrack />
+            <DragLayer />
           </div>
         </div>
       </DndProvider>
     </div>
-  </AppAudioContext.Provider>;
+  </AppAudioContext.Provider>
+);
 export default App;

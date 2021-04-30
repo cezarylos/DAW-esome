@@ -7,5 +7,5 @@ export interface AudioTrackSamplePreviewPropsInterface {
   audioBuffer: AudioBuffer;
   type: DragItemTypeEnum;
   previewTimestamp?: number;
-  start?: number
+  start?: number;
 }

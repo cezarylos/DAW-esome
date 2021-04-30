@@ -11,11 +11,11 @@ export const trackContainer = createSlice({
       state.containers = [...state.containers, action.payload];
     },
     removeTrackContainer: (state, action: PayloadAction<string>): void => {
-      state.containers  = state.containers.filter(container => container.id !== action.payload);
+      state.containers = state.containers.filter(container => container.id !== action.payload);
     }
   }
-})
+});
 
-export const { addTrackContainer, removeTrackContainer } = trackContainer.actions
+export const { addTrackContainer, removeTrackContainer } = trackContainer.actions;
 
-export default trackContainer.reducer
+export default trackContainer.reducer;

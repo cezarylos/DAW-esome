@@ -2,12 +2,10 @@ import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import EventEmitter from 'events';
 
 class Player extends EventEmitter {
-
   public isPlaying = false;
   public audioBufferSourceNode: AudioBufferSourceNode | undefined;
 
-  constructor(public readonly audioBuffer: AudioBuffer,
-              private readonly context: AudioContext) {
+  constructor(public readonly audioBuffer: AudioBuffer, private readonly context: AudioContext) {
     super();
   }
 

@@ -5,10 +5,13 @@ import { getDragOffset } from 'app/utils/get-drag-offset.util';
 import { CSSProperties } from 'react';
 import { XYCoord } from 'react-dnd';
 
-export const dragLayerPreviewStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null): CSSProperties => {
+export const dragLayerPreviewStyles = (
+  initialOffset: XYCoord | null,
+  currentOffset: XYCoord | null
+): CSSProperties => {
   if (!initialOffset || !currentOffset) {
     return {
-      display: 'none',
+      display: 'none'
     };
   }
   let { x, y } = currentOffset;
@@ -24,9 +27,13 @@ export interface PreviewPositionData {
   isInsideTrack: boolean;
 }
 
-export const getPreviewPositionData = (
-  { x, y, containers, previewElementRect, type }: getPreviewPositionDataInterface
-): PreviewPositionData => {
+export const getPreviewPositionData = ({
+  x,
+  y,
+  containers,
+  previewElementRect,
+  type
+}: getPreviewPositionDataInterface): PreviewPositionData => {
   const offset = getDragOffset(type);
   const verticalOffset = (previewElementRect?.height || 0) / 2;
 
