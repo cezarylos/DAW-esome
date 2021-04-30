@@ -6,6 +6,6 @@
   "singleQuote": true,
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "importOrder": ["^[app]"],
+  "importOrder": ["^[app]", "^[./]"],
   "importOrderSeparation": true
 }
