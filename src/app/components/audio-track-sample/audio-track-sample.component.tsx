@@ -21,6 +21,7 @@ const AudioTrackSample = ({ id, name, audioBuffer, start = 0 }: AudioTrackSample
     return audioBuffer.duration * TIMELINE_SCALE;
   }, [audioBuffer]);
 
+
   const [, drag, preview] = useDrag(() => ({
     type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE,
     item: {

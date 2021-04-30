@@ -2,7 +2,7 @@ import styles from 'app/components/arranger/arranger.module.scss';
 import AudioTrackSample from 'app/components/audio-track-sample/audio-track-sample.component';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { AudioTrackSampleInterface } from 'app/interfaces';
-import { TrackContainerInterface } from 'app/interfaces/track-container.interface';
+import { TrackContainerInterface } from 'app/interfaces';
 import { addTrackContainer } from 'app/store/slices/track-container.slice';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
 import React, { Dispatch, ReactElement, useEffect, useRef } from 'react';
@@ -11,12 +11,12 @@ import { XYCoord } from 'react-dnd/dist/types/types/monitors';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 
-interface ArrangerComponentPropsInterface {
+interface ArrangerPropsInterface {
   samples: AudioTrackSampleInterface[];
   setSamples: Dispatch<AudioTrackSampleInterface[]>;
 }
 
-const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): ReactElement => {
+const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement => {
   const arrangerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
@@ -57,17 +57,10 @@ const Arranger = ({ samples, setSamples }: ArrangerComponentPropsInterface): Rea
     }
   }), [samples]);
 
-  const test = (): void => {
-    const updatedSamples = samples.map(sample => {
-      return {...sample, start: 0};
-    });
-    setSamples(updatedSamples);
-  }
-
   return (
     <>
       <div ref={arrangerRef} className={styles.arranger}>
-        <div onDoubleClick={test} ref={drop} className={styles.droppableArea}>
+        <div ref={drop} className={styles.droppableArea}>
           {samples.map(({ id, start, name, audioBuffer }): ReactElement =>
             <AudioTrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start}/>)}
         </div>

@@ -14,6 +14,9 @@ const DragLayer = (): ReactElement => {
   const [previewRef, setPreviewRef] = useState<HTMLDivElement>();
 
   const setRef = useCallback((ref: PreviewRef): void => {
+    if (!ref.element) {
+      return;
+    }
     setPreviewRef(ref.element);
   }, []);
 

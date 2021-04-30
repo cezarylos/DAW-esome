@@ -1,3 +1,4 @@
+import { AudioTrackSamplePreviewPropsInterface } from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.interface';
 import styles from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.module.scss';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
@@ -6,8 +7,8 @@ import { getDragOffset } from 'app/utils/get-drag-offset.util';
 import classNames from 'classnames';
 import React, { CSSProperties, ReactElement, RefObject, useMemo } from 'react';
 
-const getStyles = (start: number, width: number, type: DragItemTypeEnum): CSSProperties => {
-  const transform = `translate3d(${start}px, 0, 0)`;
+const getStyles = (width: number, type: DragItemTypeEnum, start?: number,): CSSProperties => {
+  const transform = start ? `translate3d(${start}px, 0, 0)` : 'none';
   return {
     width,
     transform,
@@ -16,7 +17,13 @@ const getStyles = (start: number, width: number, type: DragItemTypeEnum): CSSPro
   };
 };
 
-const AudioTrackSamplePreview = ({ audioBuffer, start = 0, previewTimestamp, type, setRef }: any): ReactElement => {
+const AudioTrackSamplePreview = ({
+                                   audioBuffer,
+                                   start = 0,
+                                   previewTimestamp,
+                                   type,
+                                   setRef
+                                 }: AudioTrackSamplePreviewPropsInterface): ReactElement => {
 
   const audioTrackSampleRef = useGetPreviewRefHook({ setRef, type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE });
   const ref = useMemo((): RefObject<HTMLDivElement> | null =>
@@ -27,8 +34,12 @@ const AudioTrackSamplePreview = ({ audioBuffer, start = 0, previewTimestamp, typ
   }, [audioBuffer]);
 
   return <div ref={ref} className={classNames(styles.container, type === DragItemTypeEnum.AUDIO_SAMPLE && styles.alreadyOnTrack)}
-              style={getStyles(start, width, type)}>
-    {previewTimestamp >= 0 && <span className={styles.marker}>{previewTimestamp / TIMELINE_SCALE}s</span>}
+              style={getStyles(width, type, start)}>
+    {
+      previewTimestamp !== undefined &&
+      previewTimestamp >= 0 &&
+      <span className={styles.marker}>{previewTimestamp / TIMELINE_SCALE}s</span>
+    }
   </div>;
 };
 

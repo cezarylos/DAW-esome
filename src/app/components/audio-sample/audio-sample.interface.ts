@@ -1,4 +1,4 @@
-export interface AudioSampleComponentPropsInterface {
+export interface AudioSamplePropsInterface {
   name: string;
   sourceUrl: string;
 }

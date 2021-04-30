@@ -1,4 +1,4 @@
-import { AudioSampleComponentPropsInterface } from 'app/components/audio-sample/audio-sample.interface';
+import { AudioSamplePropsInterface } from 'app/components/audio-sample/audio-sample.interface';
 import styles from 'app/components/audio-sample/audio-sample.module.scss';
 import PlayButton from 'app/components/play-button/play-button.component';
 import { AppAudioContext } from 'app/context/audio.context';
@@ -10,7 +10,7 @@ import React, { ReactElement, useContext, useEffect, useRef, useState } from 're
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-const AudioSample = ({ name, sourceUrl }: AudioSampleComponentPropsInterface): ReactElement => {
+const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactElement => {
   const context = useContext(AppAudioContext);
   const ref = useRef<HTMLDivElement | null>(null);
 

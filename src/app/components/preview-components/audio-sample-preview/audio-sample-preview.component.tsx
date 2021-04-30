@@ -1,11 +1,12 @@
 import PlayButton from 'app/components/play-button/play-button.component';
+import { AudioSamplePreviewPropsInterface } from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.interface';
 import styles from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.module.scss';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { useGetPreviewRefHook } from 'app/hooks/get-preview-ref.hook';
 import classNames from 'classnames';
 import React, { ReactElement } from 'react';
 
-const AudioSamplePreview = ({ name, setRef }: any): ReactElement => {
+const AudioSamplePreview = ({ name, setRef }: AudioSamplePreviewPropsInterface): ReactElement => {
 
   const ref = useGetPreviewRefHook({ setRef, type: DragItemTypeEnum.AUDIO_SAMPLE });
 

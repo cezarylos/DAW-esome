@@ -1,8 +1,8 @@
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import { TrackContainerInterface } from 'app/interfaces/track-container.interface';
+import { TrackContainerInterface } from 'app/interfaces';
 
 export interface PreviewRef {
-  element: HTMLDivElement;
+  element: HTMLDivElement | null;
   type: DragItemTypeEnum;
 }
 

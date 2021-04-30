@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TrackContainerInterface } from 'app/interfaces/track-container.interface';
+import { TrackContainerInterface } from 'app/interfaces';
 
 export const trackContainer = createSlice({
   name: 'trackContainer',

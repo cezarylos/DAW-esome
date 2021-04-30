@@ -24,5 +24,4 @@ const App = (): ReactElement =>
       </DndProvider>
     </div>
   </AppAudioContext.Provider>;
-
 export default App;
