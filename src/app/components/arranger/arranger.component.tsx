@@ -10,7 +10,7 @@ import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import { TrackContainerInterface } from 'app/interfaces';
-import { addTrackContainer } from 'app/store/slices/track-container.slice';
+import { addTrackContainer } from 'app/store/slices/tracks.slice';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
 
 interface ArrangerPropsInterface {
@@ -39,7 +39,7 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
     () => ({
       accept: [DragItemTypeEnum.AUDIO_SAMPLE, DragItemTypeEnum.AUDIO_TRACK_SAMPLE],
       drop: (item: TrackSampleInterface, monitor): void => {
-        const { id, name, audioBuffer } = item;
+        const { id, name, audioBuffer, sourceUrl } = item;
         const type = monitor.getItemType() as DragItemTypeEnum;
         const delta = monitor.getSourceClientOffset() as XYCoord;
         const containerRect = arrangerRef.current?.getBoundingClientRect();
@@ -54,12 +54,10 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
 
         let updatedSamples;
         if (type === DragItemTypeEnum.AUDIO_SAMPLE) {
-          const sample = { start, id: v4(), name, audioBuffer };
+          const sample = { start, id: v4(), name, audioBuffer, sourceUrl };
           updatedSamples = [...samples, sample];
         } else {
-          updatedSamples = samples.map(sample =>
-            sample.id === id ? { ...sample, start } : sample
-          );
+          updatedSamples = samples.map(sample => (sample.id === id ? { ...sample, start } : sample));
         }
         setSamples(updatedSamples);
       }
@@ -72,16 +70,12 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
       <div ref={arrangerRef} className={styles.arranger}>
         <div ref={drop} className={styles.droppableArea}>
           {linesCount.map(count => (
-            <div
-              key={count}
-              className={styles.verticalLine}
-              style={{ left: count * TIMELINE_SCALE }}
-            />
+            <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
           ))}
           {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
-            ({ id, start, name, audioBuffer }): ReactElement => (
-              <TrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start} />
+            ({ id, start, name, audioBuffer, sourceUrl }): ReactElement => (
+              <TrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start} sourceUrl={sourceUrl} />
             )
           )}
         </div>

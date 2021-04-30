@@ -6,10 +6,7 @@ import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { TrackContainerInterface } from 'app/interfaces';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
 
-export const dragLayerPreviewStyles = (
-  initialOffset: XYCoord | null,
-  currentOffset: XYCoord | null
-): CSSProperties => {
+export const dragLayerPreviewStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null): CSSProperties => {
   if (!initialOffset || !currentOffset) {
     return {
       display: 'none'
@@ -38,9 +35,9 @@ export const getPreviewPositionData = ({
   const offset = getDragOffset(type);
   const verticalOffset = (previewElementRect?.height || 0) / 2;
 
-  const isInsideTrack = (trackContainer: TrackContainerInterface): boolean => {
+  const isInsideTrack = (tracks: TrackContainerInterface): boolean => {
     const MARGIN = TIMELINE_SCALE + offset;
-    const { left, right, top, bottom } = trackContainer;
+    const { left, right, top, bottom } = tracks;
     const isXInside = x >= left - MARGIN && x <= right + MARGIN;
     const isYInside = y + verticalOffset >= top && y + verticalOffset <= bottom;
     return isXInside && isYInside;

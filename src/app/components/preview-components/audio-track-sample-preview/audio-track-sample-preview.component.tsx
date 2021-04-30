@@ -30,8 +30,7 @@ const TrackSamplePreview = ({
     type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE
   });
   const ref = useMemo(
-    (): RefObject<HTMLDivElement> | null =>
-      type === DragItemTypeEnum.AUDIO_SAMPLE ? null : TrackSampleRef,
+    (): RefObject<HTMLDivElement> | null => (type === DragItemTypeEnum.AUDIO_SAMPLE ? null : TrackSampleRef),
     [type, TrackSampleRef]
   );
 
@@ -42,10 +41,7 @@ const TrackSamplePreview = ({
   return (
     <div
       ref={ref}
-      className={classNames(
-        styles.container,
-        type === DragItemTypeEnum.AUDIO_SAMPLE && styles.alreadyOnTrack
-      )}
+      className={classNames(styles.container, type === DragItemTypeEnum.AUDIO_SAMPLE && styles.alreadyOnTrack)}
       style={getStyles(width, type, start)}
     >
       {previewTimestamp !== undefined && previewTimestamp >= 0 && (

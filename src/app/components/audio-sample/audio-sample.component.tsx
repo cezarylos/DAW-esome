@@ -24,7 +24,8 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
       item: {
         type: DragItemTypeEnum.AUDIO_SAMPLE,
         name,
-        audioBuffer: player?.audioBuffer
+        audioBuffer: player?.audioBuffer,
+        sourceUrl
       },
       collect: monitor => ({
         isDragging: monitor.isDragging()
@@ -39,13 +40,12 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
   useEffect((): void => {
     const loadAudioBuffer = async () => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
-      if (loadedAudioBuffer) {
-        const playerInstance = new PlayerModel(loadedAudioBuffer, context);
-        playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) =>
-          setIsPlaying(isPlaying)
-        );
-        setPlayer(playerInstance);
+      if (!loadedAudioBuffer) {
+        return;
       }
+      const playerInstance = new PlayerModel(loadedAudioBuffer, context);
+      playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
+      setPlayer(playerInstance);
     };
     loadAudioBuffer();
   }, [context, sourceUrl]);

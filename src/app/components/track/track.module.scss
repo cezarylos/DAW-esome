@@ -6,8 +6,6 @@
   width: 100%;
   background: $grey-100;
   display: flex;
-
-  margin-bottom: 4rem;
   border-radius: 0.8rem;
 
   .options {
@@ -46,6 +44,11 @@
       span {
         @include fontInter(1.2rem);
         color: $silver;
+      }
+
+      &:disabled {
+        cursor: auto;
+        opacity: 0.5;
       }
     }
 

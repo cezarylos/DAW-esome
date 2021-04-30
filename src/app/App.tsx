@@ -4,24 +4,28 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import styles from 'app/App.module.scss';
 import DragLayer from 'app/components/drag-layer/drag-layer.component';
+import Navbar from 'app/components/navbar/navbar.component';
+import SavedTracks from 'app/components/saved-tracks/saved-tracks.component';
+import Stencil from 'app/components/stencil/stencil.component';
 import Track from 'app/components/track/track.component';
 import { AppAudioContext } from 'app/context/audio.context';
-import Navbar from 'app/views/navbar/navbar.component';
-import Stencil from 'app/views/stencil/stencil.component';
 
 const App = (): ReactElement => (
   <AppAudioContext.Provider value={new AudioContext()}>
     <div className={styles.container}>
       <Navbar />
-      <DndProvider backend={HTML5Backend}>
-        <div className={styles.main}>
+      <div className={styles.main}>
+        <DndProvider backend={HTML5Backend}>
           <Stencil />
-          <div className={styles.tracks}>
-            <Track />
-            <DragLayer />
+          <div className={styles.explorer}>
+            <div className={styles.tracks}>
+              <Track />
+              <DragLayer />
+            </div>
+            <SavedTracks />
           </div>
-        </div>
-      </DndProvider>
+        </DndProvider>
+      </div>
     </div>
   </AppAudioContext.Provider>
 );

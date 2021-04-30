@@ -1,0 +1,22 @@
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+
+.container {
+  width: 100%;
+  padding: 3.3rem;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+
+  .title {
+    @include fontInter(1.8rem);
+    margin-bottom: 1.2rem;
+  }
+
+  .noTracks {
+    @include fontInter(1.4rem);
+    color: $blue-grey;
+  }
+}

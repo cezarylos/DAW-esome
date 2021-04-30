@@ -12,7 +12,7 @@ import {
 import AudioSamplePreview from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.component';
 import TrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import { selectContainers } from 'app/store/slices/track-container.slice';
+import { selectContainers } from 'app/store/slices/tracks.slice';
 
 const DragLayer = (): ReactElement => {
   const containers = useSelector(selectContainers);
@@ -50,9 +50,7 @@ const DragLayer = (): ReactElement => {
     <div className={styles.layer}>
       <div style={dragLayerPreviewStyles(initialOffset, currentOffset)}>
         <>
-          {itemType === DragItemTypeEnum.AUDIO_SAMPLE && (
-            <AudioSamplePreview setRef={setRef} name={item.name} />
-          )}
+          {itemType === DragItemTypeEnum.AUDIO_SAMPLE && <AudioSamplePreview setRef={setRef} name={item.name} />}
           {previewPositionData?.isInsideTrack && (
             <TrackSamplePreview
               setRef={setRef}

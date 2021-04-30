@@ -10,10 +10,7 @@ class TrackModel extends EventEmitter {
   private players: PlayerModel[] = [];
   private currentlyPlaying: string[] = [];
 
-  constructor(
-    private readonly samples: TrackSampleInterface[],
-    private readonly context: AudioContext
-  ) {
+  constructor(private readonly samples: TrackSampleInterface[], private readonly context: AudioContext) {
     super();
   }
 
@@ -42,9 +39,7 @@ class TrackModel extends EventEmitter {
 
   private listenToEndPlaybackEvent(player: PlayerModel, id: string): void {
     player.audioBufferSourceNode?.addEventListener('ended', (): void => {
-      this.currentlyPlaying = this.currentlyPlaying.filter(
-        currentlyPlayingId => currentlyPlayingId !== id
-      );
+      this.currentlyPlaying = this.currentlyPlaying.filter(currentlyPlayingId => currentlyPlayingId !== id);
       this.setIsPlaying(!!this.currentlyPlaying.length);
     });
   }

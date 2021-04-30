@@ -1,0 +1,21 @@
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+
+.container {
+  width: 40.8rem;
+  height: 5.6rem;
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  background: $grey-100;
+  margin-bottom: 0.8rem;
+
+  .trackName {
+    @include fontInter(1.4rem);
+    color: $grey-800;
+    margin-left: 1.2rem;
+  }
+}
+
