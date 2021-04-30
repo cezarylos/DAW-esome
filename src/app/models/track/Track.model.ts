@@ -1,16 +1,16 @@
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
-import { AudioTrackSampleInterface } from 'app/interfaces';
-import Player from 'app/models/player/Player.model';
+import { TrackSampleInterface } from 'app/interfaces';
+import PlayerModel from 'app/models/player/Player.model';
 import EventEmitter from 'events';
 
-class Track extends EventEmitter {
+class TrackModel extends EventEmitter {
   public isPlaying = false;
-  private players: Player[] = [];
+  private players: PlayerModel[] = [];
   private currentlyPlaying: string[] = [];
 
   constructor(
-    private readonly samples: AudioTrackSampleInterface[],
+    private readonly samples: TrackSampleInterface[],
     private readonly context: AudioContext
   ) {
     super();
@@ -23,7 +23,7 @@ class Track extends EventEmitter {
       return;
     }
     this.players = samples.map(({ audioBuffer, start = 0, id }) => {
-      const player = new Player(audioBuffer, context);
+      const player = new PlayerModel(audioBuffer, context);
       player.play(start / TIMELINE_SCALE);
       this.currentlyPlaying.push(id);
       this.listenToEndPlaybackEvent(player, id);
@@ -39,7 +39,7 @@ class Track extends EventEmitter {
     this.setIsPlaying(false);
   }
 
-  private listenToEndPlaybackEvent(player: Player, id: string): void {
+  private listenToEndPlaybackEvent(player: PlayerModel, id: string): void {
     player.audioBufferSourceNode?.addEventListener('ended', (): void => {
       this.currentlyPlaying = this.currentlyPlaying.filter(
         currentlyPlayingId => currentlyPlayingId !== id
@@ -54,4 +54,4 @@ class Track extends EventEmitter {
   }
 }
 
-export default Track;
+export default TrackModel;

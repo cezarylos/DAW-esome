@@ -1,21 +1,21 @@
 import Arranger from 'app/components/arranger/arranger.component';
-import styles from 'app/components/audio-track/audio-track.module.scss';
+import styles from 'app/components/track/track.module.scss';
 import PlayButton from 'app/components/play-button/play-button.component';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
-import { AudioTrackSampleInterface } from 'app/interfaces';
-import Track from 'app/models/track/Track.model';
+import { TrackSampleInterface } from 'app/interfaces';
+import TrackModel from 'app/models/track/Track.model';
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 
-const AudioTrack = (): ReactElement => {
+const Track = (): ReactElement => {
   const context = useContext(AppAudioContext);
 
-  const [samples, setSamples] = useState<AudioTrackSampleInterface[]>([]);
-  const [track, setTrack] = useState<Track>();
+  const [samples, setSamples] = useState<TrackSampleInterface[]>([]);
+  const [track, setTrack] = useState<TrackModel>();
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect((): void => {
-    const trackInstance = new Track(samples, context);
+    const trackInstance = new TrackModel(samples, context);
     trackInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
     setTrack(trackInstance);
   }, [samples, context]);
@@ -36,4 +36,4 @@ const AudioTrack = (): ReactElement => {
   );
 };
 
-export default AudioTrack;
+export default Track;

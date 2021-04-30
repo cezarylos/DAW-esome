@@ -4,7 +4,7 @@ import PlayButton from 'app/components/play-button/play-button.component';
 import { AppAudioContext } from 'app/context/audio.context';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
-import Player from 'app/models/player/Player.model';
+import PlayerModel from 'app/models/player/Player.model';
 import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
 import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
@@ -14,7 +14,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
   const context = useContext(AppAudioContext);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const [player, setPlayer] = useState<Player>();
+  const [player, setPlayer] = useState<PlayerModel>();
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [, drag, preview] = useDrag(() => {
@@ -39,7 +39,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
     const loadAudioBuffer = async () => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
       if (loadedAudioBuffer) {
-        const playerInstance = new Player(loadedAudioBuffer, context);
+        const playerInstance = new PlayerModel(loadedAudioBuffer, context);
         playerInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
         setPlayer(playerInstance);
       }

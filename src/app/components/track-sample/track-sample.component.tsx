@@ -1,7 +1,7 @@
-import styles from 'app/components/audio-track-sample/audio-track-sample.module.scss';
+import styles from 'app/components/track-sample/track-sample.module.scss';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import { AudioTrackSampleInterface } from 'app/interfaces';
+import { TrackSampleInterface } from 'app/interfaces';
 import React, { CSSProperties, ReactElement, useEffect, useMemo } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -15,7 +15,7 @@ const getStyles = (start: number, width: number): CSSProperties => {
   };
 }
 
-const AudioTrackSample = ({ id, name, audioBuffer, start = 0 }: AudioTrackSampleInterface): ReactElement => {
+const TrackSample = ({ id, name, audioBuffer, start = 0 }: TrackSampleInterface): ReactElement => {
 
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
@@ -41,4 +41,4 @@ const AudioTrackSample = ({ id, name, audioBuffer, start = 0 }: AudioTrackSample
   </div>;
 };
 
-export default AudioTrackSample;
+export default TrackSample;

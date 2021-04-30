@@ -1,7 +1,7 @@
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import EventEmitter from 'events';
 
-class Player extends EventEmitter {
+class PlayerModel extends EventEmitter {
   public isPlaying = false;
   public audioBufferSourceNode: AudioBufferSourceNode | undefined;
 
@@ -42,4 +42,4 @@ class Player extends EventEmitter {
   }
 }
 
-export default Player;
+export default PlayerModel;

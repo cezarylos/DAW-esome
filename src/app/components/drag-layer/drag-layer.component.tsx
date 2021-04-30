@@ -2,15 +2,15 @@ import { PreviewRef } from 'app/components/drag-layer/drag-layer.interface';
 import styles from 'app/components/drag-layer/drag-layer.module.scss';
 import { dragLayerPreviewStyles, getPreviewPositionData, PreviewPositionData } from 'app/components/drag-layer/drag-layer.utils';
 import AudioSamplePreview from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.component';
-import AudioTrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
+import TrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import { RootState } from 'app/store/store';
+import { selectContainers } from 'app/store/slices/track-container.slice';
 import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useDragLayer } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
 const DragLayer = (): ReactElement => {
-  const { containers } = useSelector((state: RootState) => state.trackContainer);
+  const containers = useSelector(selectContainers);
   const [previewRef, setPreviewRef] = useState<HTMLDivElement>();
 
   const setRef = useCallback((ref: PreviewRef): void => {
@@ -53,7 +53,7 @@ const DragLayer = (): ReactElement => {
         <>
           {itemType === DragItemTypeEnum.AUDIO_SAMPLE && <AudioSamplePreview setRef={setRef} name={item.name}/>}
           {previewPositionData?.isInsideTrack &&
-          <AudioTrackSamplePreview setRef={setRef} type={item.type} audioBuffer={item.audioBuffer}
+          <TrackSamplePreview setRef={setRef} type={item.type} audioBuffer={item.audioBuffer}
                                    previewTimestamp={previewPositionData?.previewTimestamp}/>
           }
         </>

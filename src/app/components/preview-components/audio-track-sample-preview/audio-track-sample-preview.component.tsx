@@ -1,4 +1,4 @@
-import { AudioTrackSamplePreviewPropsInterface } from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.interface';
+import { TrackSamplePreviewPropsInterface } from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.interface';
 import styles from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.module.scss';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
@@ -17,17 +17,17 @@ const getStyles = (width: number, type: DragItemTypeEnum, start?: number,): CSSP
   };
 };
 
-const AudioTrackSamplePreview = ({
+const TrackSamplePreview = ({
                                    audioBuffer,
                                    start = 0,
                                    previewTimestamp,
                                    type,
                                    setRef
-                                 }: AudioTrackSamplePreviewPropsInterface): ReactElement => {
+                                 }: TrackSamplePreviewPropsInterface): ReactElement => {
 
-  const audioTrackSampleRef = useGetPreviewRefHook({ setRef, type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE });
+  const TrackSampleRef = useGetPreviewRefHook({ setRef, type: DragItemTypeEnum.AUDIO_TRACK_SAMPLE });
   const ref = useMemo((): RefObject<HTMLDivElement> | null =>
-    type === DragItemTypeEnum.AUDIO_SAMPLE ? null : audioTrackSampleRef, [type, audioTrackSampleRef]);
+    type === DragItemTypeEnum.AUDIO_SAMPLE ? null : TrackSampleRef, [type, TrackSampleRef]);
 
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
@@ -43,4 +43,4 @@ const AudioTrackSamplePreview = ({
   </div>;
 };
 
-export default AudioTrackSamplePreview;
+export default TrackSamplePreview;

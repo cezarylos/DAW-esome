@@ -1,4 +1,4 @@
-export interface AudioTrackSampleInterface {
+export interface TrackSampleInterface {
   id: string;
   name: string;
   audioBuffer: AudioBuffer;
