@@ -37,4 +37,12 @@ export class StorageService {
       console.error(e);
     }
   }
+
+  public setTracks(tracks: SavedTrackInterface[]): void {
+    try {
+      StorageService.store(StorageKeysEnum.TRACKS, JSON.stringify(tracks));
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }

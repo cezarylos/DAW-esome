@@ -16,3 +16,16 @@ export const getSavedTracks = createAsyncThunk('tracks/getSavedTracks', (): Save
   const storageService = StorageService.getInstance();
   return storageService.getTracks() as SavedTrackInterface[];
 });
+
+export const removeSavedTrack = createAsyncThunk('tracks/removeSavedTrack', (trackId: string):
+  | SavedTrackInterface[]
+  | void => {
+  const storageService = StorageService.getInstance();
+  const tracks = storageService.getTracks();
+  if (!tracks) {
+    return;
+  }
+  const updatedTracks = tracks.filter((track: SavedTrackInterface) => track.id !== trackId);
+  storageService.setTracks(updatedTracks);
+  return updatedTracks;
+});

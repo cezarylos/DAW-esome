@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactElement, useEffect, useMemo } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
+import RemoveButton from 'app/components/remove-button/remove-button.component';
 import styles from 'app/components/track-sample/track-sample.module.scss';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
@@ -16,7 +17,7 @@ const getStyles = (start: number, width: number): CSSProperties => {
   };
 };
 
-const TrackSample = ({ id, name, audioBuffer, start = 0 }: TrackSampleInterface): ReactElement => {
+const TrackSample = ({ id, name, audioBuffer, start = 0, onSampleRemove }: TrackSampleInterface): ReactElement => {
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
   }, [audioBuffer]);
@@ -41,6 +42,7 @@ const TrackSample = ({ id, name, audioBuffer, start = 0 }: TrackSampleInterface)
   return (
     <div ref={drag} className={styles.container} style={getStyles(start, width)}>
       <span className={styles.name}>{name}</span>
+      <RemoveButton onClick={onSampleRemove} className={styles.removeButton} />
     </div>
   );
 };

@@ -4,4 +4,5 @@ export interface TrackSampleInterface {
   start: number;
   name?: string;
   sourceUrl?: string;
+  onSampleRemove?: () => any;
 }

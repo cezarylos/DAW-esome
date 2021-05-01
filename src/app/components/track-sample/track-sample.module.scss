@@ -13,8 +13,29 @@
   position: absolute;
   background: #44837D;
 
+  &:hover {
+    .removeButton {
+      visibility: visible;
+    }
+  }
+
   .name {
     @include fontInter(1.2rem);
     color: $white;
+  }
+
+  .removeButton {
+    visibility: hidden;
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    z-index: 100;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    img {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
   }
 }

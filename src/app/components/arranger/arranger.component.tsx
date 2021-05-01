@@ -65,6 +65,11 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
     [samples]
   );
 
+  const onSampleRemoved = (id: string): (() => void) => (): void => {
+    const updatedSamples = samples.filter(sample => sample.id !== id);
+    setSamples(updatedSamples);
+  };
+
   return (
     <>
       <div ref={arrangerRef} className={styles.arranger}>
@@ -75,7 +80,15 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
           {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
             ({ id, start, name, audioBuffer, sourceUrl }): ReactElement => (
-              <TrackSample key={id} id={id} name={name} audioBuffer={audioBuffer} start={start} sourceUrl={sourceUrl} />
+              <TrackSample
+                key={id}
+                id={id}
+                name={name}
+                audioBuffer={audioBuffer}
+                start={start}
+                sourceUrl={sourceUrl}
+                onSampleRemove={onSampleRemoved(id)}
+              />
             )
           )}
         </div>

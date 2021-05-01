@@ -1,0 +1,17 @@
+@import 'src/styles/variables';
+
+.container {
+  height: 2.2rem;
+  width: 2.2rem;
+  background: $grey-200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+
+  img {
+    width: 1.35rem;
+    height: auto;
+  }
+}

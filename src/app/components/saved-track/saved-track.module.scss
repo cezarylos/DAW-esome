@@ -12,11 +12,24 @@
   background: $grey-100;
   margin-bottom: 0.8rem;
   border-radius: 0.8rem;
+  position: relative;
+
+  &:hover {
+    .removeButton {
+      visibility: visible;
+    }
+  }
 
   .trackName {
     @include fontInter(1.4rem);
     color: $grey-800;
     margin-left: 1.2rem;
+  }
+
+  .removeButton {
+    visibility: hidden;
+    position: absolute;
+    right: 1.2rem;
   }
 }
 
