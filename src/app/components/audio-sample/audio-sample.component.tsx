@@ -38,7 +38,7 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
   }, [preview]);
 
   useEffect((): void => {
-    const loadAudioBuffer = async () => {
+    const loadAudioBuffer = async (): Promise<void> => {
       const loadedAudioBuffer = await loadAudioBufferUtil({ context, sourceUrl });
       if (!loadedAudioBuffer) {
         return;
