@@ -9,7 +9,7 @@ import styles from 'app/components/track/track.module.scss';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
-import TrackModel from 'app/models/track/Track.model';
+import TrackModel from 'app/models/track/track.model';
 import { saveTrack } from 'app/store/actions';
 import { selectSavedTracks } from 'app/store/slices/tracks.slice';
 
@@ -48,6 +48,7 @@ const Track = (): ReactElement => {
       id: v4()
     } as SavedTrackInterface;
     dispatch(saveTrack(trackToSave));
+    setSamples([]);
   };
 
   return (

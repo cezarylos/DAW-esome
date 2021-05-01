@@ -8,7 +8,7 @@ import PlayButton from 'app/components/play-button/play-button.component';
 import { AppAudioContext } from 'app/context/audio.context';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
-import PlayerModel from 'app/models/player/Player.model';
+import PlayerModel from 'app/models/player/player.model';
 import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
 
 const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactElement => {

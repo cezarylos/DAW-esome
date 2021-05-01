@@ -1,4 +1,5 @@
 import { IAudioContext } from 'standardized-audio-context';
+import { v4 } from 'uuid';
 
 import { SavedSampleInterface } from 'app/components/saved-track/saved-track.interface';
 import { TrackSampleInterface } from 'app/interfaces';
@@ -33,6 +34,6 @@ const loadSample = async (
   return {
     audioBuffer,
     start,
-    id
+    id: id || v4()
   };
 };

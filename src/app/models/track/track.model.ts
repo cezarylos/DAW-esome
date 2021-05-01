@@ -4,7 +4,7 @@ import { IAudioContext } from 'standardized-audio-context';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
-import PlayerModel from 'app/models/player/Player.model';
+import PlayerModel from 'app/models/player/player.model';
 
 class TrackModel extends EventEmitter {
   public isPlaying = false;
@@ -21,13 +21,15 @@ class TrackModel extends EventEmitter {
       this.stop();
       return;
     }
-    this.players = samples.map(({ audioBuffer, start = 0, id }) => {
-      const player = new PlayerModel(audioBuffer, context);
-      player.play(start / TIMELINE_SCALE);
-      this.currentlyPlaying.push(id);
-      this.listenToEndPlaybackEvent(player, id);
-      return player;
-    });
+    this.players = samples.map(
+      ({ audioBuffer, start = 0, id }): PlayerModel => {
+        const player = new PlayerModel(audioBuffer, context);
+        player.play(start / TIMELINE_SCALE);
+        this.currentlyPlaying.push(id);
+        this.listenToEndPlaybackEvent(player, id);
+        return player;
+      }
+    );
     this.setIsPlaying(true);
   }
 

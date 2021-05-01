@@ -29,12 +29,13 @@ const mockedTracks = [
     id
   }
 ];
+
 const mockedStorage = {
   [StorageKeysEnum.TRACKS]: JSON.stringify({ [id]: mockedTracks[0] })
 };
 
 describe('storage service', (): void => {
-   it('should test getting track from localStorage and parsing them', (): void => {
+  it('should test getting track from localStorage and parsing them', (): void => {
     Storage.prototype.getItem = jest.fn((key: StorageKeysEnum): string => mockedStorage[key]);
     const tracks = service.getTracks();
     expect(tracks).toEqual([mockedTracks[0]]);
