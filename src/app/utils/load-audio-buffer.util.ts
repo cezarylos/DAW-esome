@@ -1,5 +1,7 @@
+import { IAudioContext } from 'standardized-audio-context';
+
 interface LoadAudioBufferUtilInterface {
-  context: AudioContext;
+  context: IAudioContext;
   sourceUrl: string;
 }
 

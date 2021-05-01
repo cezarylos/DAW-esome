@@ -2,16 +2,15 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import PlayButton from 'app/components/play-button/play-button.component';
-import { SavedSampleInterface, SavedTrackPropsInterface } from 'app/components/saved-track/saved-track.interface';
+import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import styles from 'app/components/saved-track/saved-track.module.scss';
 import { loadTrackSamples } from 'app/components/saved-track/saved.track.utils';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/Track.model';
-import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
 
-const SavedTrack = ({ name, samples }: SavedTrackPropsInterface): ReactElement => {
+const SavedTrack = ({ name, samples }: SavedTrackInterface): ReactElement => {
   const context = useContext(AppAudioContext);
   const dispatch = useDispatch();
 

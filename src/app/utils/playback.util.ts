@@ -1,10 +1,16 @@
+import { IAudioBufferSourceNode, IAudioContext } from 'standardized-audio-context';
+
 export interface PlaySoundInterface {
-  context: AudioContext;
+  context: IAudioContext;
   audioBuffer: AudioBuffer;
   start?: number;
 }
 
-export const playSound = ({ context, audioBuffer, start = 0 }: PlaySoundInterface): AudioBufferSourceNode => {
+export const playSound = ({
+  context,
+  audioBuffer,
+  start = 0
+}: PlaySoundInterface): IAudioBufferSourceNode<IAudioContext> => {
   const source = context.createBufferSource();
   source.buffer = audioBuffer;
   source.connect(context.destination);

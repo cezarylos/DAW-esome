@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { IAudioContext } from 'standardized-audio-context';
 
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
@@ -10,7 +11,7 @@ class TrackModel extends EventEmitter {
   private players: PlayerModel[] = [];
   private currentlyPlaying: string[] = [];
 
-  constructor(private readonly samples: TrackSampleInterface[], private readonly context: AudioContext) {
+  constructor(private readonly samples: TrackSampleInterface[], private readonly context: IAudioContext) {
     super();
   }
 

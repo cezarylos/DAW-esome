@@ -1,6 +1,7 @@
-export interface SavedTrackPropsInterface {
+export interface SavedTrackInterface {
   name: string;
   samples: SavedSampleInterface[];
+  id: string;
 }
 
 export interface SavedSampleInterface {

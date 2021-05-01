@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { AudioContext } from 'standardized-audio-context';
 
 import styles from 'app/App.module.scss';
 import DragLayer from 'app/components/drag-layer/drag-layer.component';

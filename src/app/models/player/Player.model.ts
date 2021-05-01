@@ -1,12 +1,13 @@
 import EventEmitter from 'events';
+import { IAudioBufferSourceNode, IAudioContext } from 'standardized-audio-context';
 
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 
 class PlayerModel extends EventEmitter {
   public isPlaying = false;
-  public audioBufferSourceNode: AudioBufferSourceNode | undefined;
+  public audioBufferSourceNode: IAudioBufferSourceNode<IAudioContext> | undefined;
 
-  constructor(public readonly audioBuffer: AudioBuffer, private readonly context: AudioContext) {
+  constructor(public readonly audioBuffer: AudioBuffer, private readonly context: IAudioContext) {
     super();
   }
 

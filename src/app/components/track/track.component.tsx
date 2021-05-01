@@ -4,13 +4,14 @@ import { v4 } from 'uuid';
 
 import Arranger from 'app/components/arranger/arranger.component';
 import PlayButton from 'app/components/play-button/play-button.component';
+import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import styles from 'app/components/track/track.module.scss';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/Track.model';
+import { saveTrack } from 'app/store/actions';
 import { selectSavedTracks } from 'app/store/slices/tracks.slice';
-import { saveTrack } from 'app/store/slices/tracks.slice';
 
 const Track = (): ReactElement => {
   const context = useContext(AppAudioContext);
@@ -45,7 +46,7 @@ const Track = (): ReactElement => {
       name: trackName || `TRACK_${savedTracks.length + 1}`,
       samples: samplesToSave,
       id: v4()
-    };
+    } as SavedTrackInterface;
     dispatch(saveTrack(trackToSave));
   };
 
