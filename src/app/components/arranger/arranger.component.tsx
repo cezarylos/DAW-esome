@@ -77,7 +77,7 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
           ))}
           {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
-            ({ id, start, name, audioBuffer, sourceUrl , color}): ReactElement => (
+            ({ id, start, name, audioBuffer, sourceUrl, color }): ReactElement => (
               <TrackSample
                 key={id}
                 id={id}

@@ -1,10 +1,10 @@
-import PlayButton from 'app/components/play-button/play-button.component';
-import TrackModel from 'app/models/track/track.model';
-import React, {ReactElement, useCallback, useRef, useState} from 'react';
+import React, { ReactElement, useCallback, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 import ActionButton from 'app/components/action-button/action-button.component';
+import PlayButton from 'app/components/play-button/play-button.component';
 import Track from 'app/components/track/track.component';
+import TrackModel from 'app/models/track/track.model';
 import styles from 'app/views/tracks/tracks.module.scss';
 
 const Tracks = (): ReactElement => {
@@ -23,7 +23,7 @@ const Tracks = (): ReactElement => {
         top: element.scrollHeight,
         behavior: 'smooth'
       });
-    }
+    };
     setTimeout(scrollToBottom);
   };
 
@@ -32,20 +32,23 @@ const Tracks = (): ReactElement => {
     setTracks(updatedTracks);
   };
 
-  const getTrackInstance = useCallback((trackInstance: TrackModel): void => {
-    setTrackInstances([...trackInstances, trackInstance]);
-  }, [tracks]);
+  const getTrackInstance = useCallback(
+    (trackInstance: TrackModel): void => {
+      setTrackInstances([...trackInstances, trackInstance]);
+    },
+    [tracks]
+  );
 
   const play = (): void => {
     trackInstances.forEach(track => track.play());
-  }
+  };
 
   return (
-    <div className={styles.container} >
+    <div className={styles.container}>
       {/*<PlayButton onClick={play}/>*/}
       <div ref={ref} className={styles.tracks}>
         {tracks.map(trackId => (
-            <Track key={trackId} onTrackRemove={onTrackRemove(trackId)} getTrackInstance={getTrackInstance}/>
+          <Track key={trackId} onTrackRemove={onTrackRemove(trackId)} getTrackInstance={getTrackInstance} />
         ))}
       </div>
       <ActionButton label={'Add Track'} onClick={onAddTrack} className={styles.addTrackButton} />

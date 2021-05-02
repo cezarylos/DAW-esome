@@ -2,7 +2,7 @@ import randomColor from 'randomcolor';
 
 const colorOptions = {
   luminosity: 'dark'
-} as any
+} as any;
 
 export const samples = [
   { name: 'Bass', sourceUrl: 'samples/Bass.mp3', color: randomColor(colorOptions) },

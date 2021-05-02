@@ -18,7 +18,14 @@ const getStyles = (start: number, width: number, color: string): CSSProperties =
   };
 };
 
-const TrackSample = ({ id, name, audioBuffer, start = 0, onSampleRemove, color = '#44837D' }: TrackSampleInterface): ReactElement => {
+const TrackSample = ({
+  id,
+  name,
+  audioBuffer,
+  start = 0,
+  onSampleRemove,
+  color = '#44837D'
+}: TrackSampleInterface): ReactElement => {
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
   }, [audioBuffer]);
