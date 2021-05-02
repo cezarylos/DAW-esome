@@ -41,9 +41,9 @@ const SavedTrack = ({ name, samples, id }: SavedTrackInterface): ReactElement =>
 
   return (
     <div className={styles.container}>
+      <RemoveButton onClick={onTrackRemove} className={styles.removeButton} isWhiteIcon />
       <PlayButton onClick={() => track?.play()} isPlaying={isPlaying} />
       <span className={styles.trackName}>{name}</span>
-      <RemoveButton onClick={onTrackRemove} className={styles.removeButton} />
     </div>
   );
 };

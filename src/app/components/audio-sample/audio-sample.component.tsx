@@ -11,7 +11,7 @@ import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import PlayerModel from 'app/models/player/player.model';
 import { loadAudioBufferUtil } from 'app/utils/load-audio-buffer.util';
 
-const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactElement => {
+const AudioSample = ({ name, sourceUrl, color }: AudioSamplePropsInterface): ReactElement => {
   const context = useContext(AppAudioContext);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -25,7 +25,8 @@ const AudioSample = ({ name, sourceUrl }: AudioSamplePropsInterface): ReactEleme
         type: DragItemTypeEnum.AUDIO_SAMPLE,
         name,
         audioBuffer: player?.audioBuffer,
-        sourceUrl
+        sourceUrl,
+        color
       },
       collect: monitor => ({
         isDragging: monitor.isDragging()

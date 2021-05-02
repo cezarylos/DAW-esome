@@ -11,7 +11,6 @@
   align-items: flex-end;
   cursor: move;
   position: absolute;
-  background: #44837D;
 
   &:hover {
     .removeButton {
@@ -22,6 +21,7 @@
   .name {
     @include fontInter(1.2rem);
     color: $white;
+    word-break: break-word;
   }
 
   .removeButton {

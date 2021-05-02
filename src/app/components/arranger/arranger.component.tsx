@@ -39,7 +39,7 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
     () => ({
       accept: [DragItemTypeEnum.AUDIO_SAMPLE, DragItemTypeEnum.AUDIO_TRACK_SAMPLE],
       drop: (item: TrackSampleInterface, monitor): void => {
-        const { id, name, audioBuffer, sourceUrl } = item;
+        const { id, name, audioBuffer, sourceUrl, color } = item;
         const type = monitor.getItemType() as DragItemTypeEnum;
         const delta = monitor.getSourceClientOffset() as XYCoord;
         const containerRect = arrangerRef.current?.getBoundingClientRect();
@@ -47,14 +47,12 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
           return;
         }
 
-        const start = delta.x - containerRect.x + getDragOffset(type);
-        if (start < 0) {
-          return;
-        }
+        let start = delta.x - containerRect.x + getDragOffset(type);
+        start = start < 0 ? 0 : start;
 
         let updatedSamples;
         if (type === DragItemTypeEnum.AUDIO_SAMPLE) {
-          const sample = { start, id: v4(), name, audioBuffer, sourceUrl };
+          const sample = { start, id: v4(), name, audioBuffer, sourceUrl, color };
           updatedSamples = [...samples, sample];
         } else {
           updatedSamples = samples.map(sample => (sample.id === id ? { ...sample, start } : sample));
@@ -79,7 +77,7 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
           ))}
           {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
-            ({ id, start, name, audioBuffer, sourceUrl }): ReactElement => (
+            ({ id, start, name, audioBuffer, sourceUrl , color}): ReactElement => (
               <TrackSample
                 key={id}
                 id={id}
@@ -87,6 +85,7 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
                 audioBuffer={audioBuffer}
                 start={start}
                 sourceUrl={sourceUrl}
+                color={color}
                 onSampleRemove={onSampleRemoved(id)}
               />
             )

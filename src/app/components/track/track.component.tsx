@@ -15,7 +15,7 @@ import TrackModel from 'app/models/track/track.model';
 import { saveTrack } from 'app/store/actions/tracks.actions';
 import { selectSavedTracks } from 'app/store/slices/tracks.slice';
 
-const Track = ({ onTrackRemove }: any): ReactElement => {
+const Track = ({ onTrackRemove, getTrackInstance }: any): ReactElement => {
   const context = useContext(AppAudioContext);
   const savedTracks = useSelector(selectSavedTracks);
   const dispatch = useDispatch();
@@ -29,7 +29,8 @@ const Track = ({ onTrackRemove }: any): ReactElement => {
     const trackInstance = new TrackModel(samples, context);
     trackInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
     setTrack(trackInstance);
-  }, [samples, context]);
+    getTrackInstance(trackInstance);
+  }, [samples, context, getTrackInstance]);
 
   useEffect((): (() => void) => {
     return (): void => {
@@ -50,7 +51,6 @@ const Track = ({ onTrackRemove }: any): ReactElement => {
       id: v4()
     } as SavedTrackInterface;
     dispatch(saveTrack(trackToSave));
-    setSamples([]);
   };
 
   return (

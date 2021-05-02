@@ -8,16 +8,17 @@ import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 
-const getStyles = (start: number, width: number): CSSProperties => {
+const getStyles = (start: number, width: number, color: string): CSSProperties => {
   const transform = `translate3d(${start}px, 0, 0)`;
   return {
     width,
     transform,
-    WebkitTransform: transform
+    WebkitTransform: transform,
+    background: color
   };
 };
 
-const TrackSample = ({ id, name, audioBuffer, start = 0, onSampleRemove }: TrackSampleInterface): ReactElement => {
+const TrackSample = ({ id, name, audioBuffer, start = 0, onSampleRemove, color = '#44837D' }: TrackSampleInterface): ReactElement => {
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
   }, [audioBuffer]);
@@ -40,7 +41,7 @@ const TrackSample = ({ id, name, audioBuffer, start = 0, onSampleRemove }: Track
   }, [preview]);
 
   return (
-    <div ref={drag} className={styles.container} style={getStyles(start, width)}>
+    <div ref={drag} className={styles.container} style={getStyles(start, width, color)}>
       <span className={styles.name}>{name}</span>
       <RemoveButton onClick={onSampleRemove} className={styles.removeButton} />
     </div>

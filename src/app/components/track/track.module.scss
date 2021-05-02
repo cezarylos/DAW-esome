@@ -12,6 +12,10 @@
   margin-bottom: 2rem;
   position: relative;
 
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
   &:hover {
     .removeTrackButton {
       visibility: visible;
