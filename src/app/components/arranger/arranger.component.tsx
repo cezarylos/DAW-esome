@@ -1,22 +1,17 @@
-import React, { Dispatch, ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { XYCoord } from 'react-dnd/dist/types/types/monitors';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 
+import { ArrangerPropsInterface } from 'app/components/arranger/arranger.interface';
 import styles from 'app/components/arranger/arranger.module.scss';
 import TrackSample from 'app/components/track-sample/track-sample.component';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
-import { TrackSampleInterface } from 'app/interfaces';
-import { TrackContainerInterface } from 'app/interfaces';
+import { TrackContainerInterface, TrackSampleInterface } from 'app/interfaces';
 import { addTrackContainer } from 'app/store/slices/tracks.slice';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
-
-interface ArrangerPropsInterface {
-  samples: TrackSampleInterface[];
-  setSamples: Dispatch<TrackSampleInterface[]>;
-}
 
 const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement => {
   const dispatch = useDispatch();
