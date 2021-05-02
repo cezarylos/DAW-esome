@@ -14,7 +14,7 @@ import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
 import { saveTrack } from 'app/store/actions/tracks.actions';
-import { selectSavedTracks } from 'app/store/slices/tracks.slice';
+import { addTrackModel, removeTrackModel, selectSavedTracks } from 'app/store/slices/tracks.slice';
 
 const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
   const context = useContext(AppAudioContext);
@@ -27,10 +27,15 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
   const [trackName, setTrackName] = useState('');
 
   useEffect((): void => {
+    if (track) {
+      dispatch(removeTrackModel(track.id));
+    }
     const trackInstance = new TrackModel(samples, context);
     trackInstance.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }) => setIsPlaying(isPlaying));
     setTrack(trackInstance);
-  }, [samples, context]);
+    dispatch(addTrackModel(trackInstance));
+    //eslint-disable-next-line
+  }, [samples, context, dispatch]);
 
   useEffect((): (() => void) => {
     return (): void => {

@@ -1,0 +1,53 @@
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+
+.container {
+  height: 5rem;
+  width: fit-content;
+  min-width: 100%;
+  background: $grey-100;
+  display: flex;
+  border-radius: 0.8rem;
+  margin-bottom: 2rem;
+  position: relative;
+
+  .options {
+    padding: 1.2rem;
+    width: 14rem;
+    height: 100%;
+    background: $white;
+    display: flex;
+    border-top-left-radius: 0.8rem;
+    border-bottom-left-radius: 0.8rem;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+
+    .trackName {
+      @include fontInter(1.4rem);
+      width: fit-content;
+      border: none;
+      outline: none;
+      margin-left: 1rem;
+    }
+  }
+
+  .timeline {
+    flex: 1;
+    position: relative;
+
+    .verticalLine, .timer {
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background: $grey;
+      top: 0;
+    }
+
+    .timer {
+      width: 1px;
+      background: $orange;
+    }
+  }
+}

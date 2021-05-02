@@ -2,18 +2,30 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import { TrackContainerInterface } from 'app/interfaces';
+import TrackModel from 'app/models/track/track.model';
 import { saveTrack, getSavedTracks, removeSavedTrack } from 'app/store/actions/tracks.actions';
 import { RootState } from 'app/store/store';
 
-type SliceState = { containers: TrackContainerInterface[]; savedTracks: any[] };
+type SliceState = {
+  containers: TrackContainerInterface[];
+  savedTracks: SavedTrackInterface[];
+  trackModels: TrackModel[];
+};
 
 export const tracks = createSlice({
   name: 'tracks',
   initialState: {
-    containers: [] as TrackContainerInterface[],
-    savedTracks: [] as SavedTrackInterface[]
+    containers: [],
+    savedTracks: [],
+    trackModels: []
   },
   reducers: {
+    addTrackModel: (state: SliceState, { payload }: PayloadAction<any>): void => {
+      state.trackModels = [...state.trackModels, payload];
+    },
+    removeTrackModel: (state: SliceState, { payload }: PayloadAction<string>): void => {
+      state.trackModels = state.trackModels.filter(trackModel => trackModel.id !== payload);
+    },
     addTrackContainer: (state: SliceState, { payload }: PayloadAction<TrackContainerInterface>): void => {
       state.containers = [...state.containers, payload];
     },
@@ -34,8 +46,9 @@ export const tracks = createSlice({
   }
 });
 
-export const { addTrackContainer, removeTrackContainer } = tracks.actions;
+export const { addTrackContainer, removeTrackContainer, addTrackModel, removeTrackModel } = tracks.actions;
 export const selectContainers = (state: RootState) => state.tracks.containers;
 export const selectSavedTracks = (state: RootState) => state.tracks.savedTracks;
+export const selectTrackModels = (state: RootState) => state.tracks.trackModels;
 
 export default tracks.reducer;
