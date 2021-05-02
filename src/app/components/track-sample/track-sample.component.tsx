@@ -18,13 +18,15 @@ const getStyles = (start: number, width: number, color: string): CSSProperties =
   };
 };
 
+const DEFAULT_COLOR = '#44837D';
+
 const TrackSample = ({
   id,
   name,
   audioBuffer,
   start = 0,
   onSampleRemove,
-  color = '#44837D'
+  color = DEFAULT_COLOR
 }: TrackSampleInterface): ReactElement => {
   const width = useMemo((): number => {
     return audioBuffer.duration * TIMELINE_SCALE;
