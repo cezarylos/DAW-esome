@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import Navbar from 'app/components/navbar/navbar.component';
+import Navbar from 'app/views/navbar/navbar.component';
 
 describe('nabvar', (): void => {
   it('navbar should contain certain header text', (): void => {

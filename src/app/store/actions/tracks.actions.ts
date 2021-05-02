@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import { StorageService } from 'app/services/storage.service';
+import { RootState } from 'app/store/store';
 
 export const saveTrack = createAsyncThunk(
   'tracks/saveTrack',
@@ -17,15 +18,17 @@ export const getSavedTracks = createAsyncThunk('tracks/getSavedTracks', (): Save
   return storageService.getTracks() as SavedTrackInterface[];
 });
 
-export const removeSavedTrack = createAsyncThunk('tracks/removeSavedTrack', (trackId: string):
+export const removeSavedTrack = createAsyncThunk('tracks/removeSavedTrack', (trackId: string, { getState }):
   | SavedTrackInterface[]
   | void => {
   const storageService = StorageService.getInstance();
-  const tracks = storageService.getTracks();
-  if (!tracks) {
+  const {
+    tracks: { savedTracks }
+  } = getState() as RootState;
+  if (!savedTracks) {
     return;
   }
-  const updatedTracks = tracks.filter((track: SavedTrackInterface) => track.id !== trackId);
+  const updatedTracks = savedTracks.filter((track: SavedTrackInterface) => track.id !== trackId);
   storageService.setTracks(updatedTracks);
   return updatedTracks;
 });

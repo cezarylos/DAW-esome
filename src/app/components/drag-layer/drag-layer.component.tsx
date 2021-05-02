@@ -2,13 +2,9 @@ import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useDragLayer } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
-import { PreviewRef } from 'app/components/drag-layer/drag-layer.interface';
+import { PreviewPositionData, PreviewRef } from 'app/components/drag-layer/drag-layer.interface';
 import styles from 'app/components/drag-layer/drag-layer.module.scss';
-import {
-  dragLayerPreviewStyles,
-  getPreviewPositionData,
-  PreviewPositionData
-} from 'app/components/drag-layer/drag-layer.utils';
+import { dragLayerPreviewStyles, getPreviewPositionData } from 'app/components/drag-layer/drag-layer.utils';
 import AudioSamplePreview from 'app/components/preview-components/audio-sample-preview/audio-sample-preview.component';
 import TrackSamplePreview from 'app/components/preview-components/audio-track-sample-preview/audio-track-sample-preview.component';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';

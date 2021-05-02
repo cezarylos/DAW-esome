@@ -2,8 +2,8 @@
 @import 'src/styles/mixins';
 
 .arranger {
-  flex: 1;
   position: relative;
+  flex: 1;
 
   .droppableArea {
     flex: 1;
@@ -19,7 +19,7 @@
   }
 
   .placeholder {
-    color: #888888;
+    color: $dark-grey;
     position: absolute;
     top: 0;
     bottom: 0;

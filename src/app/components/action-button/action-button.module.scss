@@ -1,0 +1,26 @@
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+
+.container {
+  min-width: 4.4rem;
+  width: fit-content;
+  height: 2.3rem;
+  border-radius: 2.3rem;
+  background: $grey-200;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  span {
+    @include fontInter(1.2rem);
+    color: $silver;
+  }
+
+  &:disabled {
+    cursor: auto;
+    opacity: 0.5;
+  }
+}

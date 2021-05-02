@@ -4,23 +4,4 @@
   display: flex;
   flex-flow: column;
   height: 100vh;
-  overflow-y: hidden;
-
-  .main {
-    display: flex;
-    flex: 1;
-    background: $grey-200;
-
-    .explorer {
-      display: flex;
-      flex: 1;
-      flex-flow: column;
-    }
-
-    .tracks {
-      display: flex;
-      flex-flow: column;
-      padding: 2.4rem 1.2rem;
-    }
-  }
 }

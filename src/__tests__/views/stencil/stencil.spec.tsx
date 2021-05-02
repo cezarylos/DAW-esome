@@ -2,8 +2,8 @@ import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
-import Stencil from 'app/components/stencil/stencil.component';
 import { samples } from 'app/consts/samples';
+import Stencil from 'app/views/stencil/stencil';
 
 describe('stencil', (): void => {
   it('should render AudioSample components', async (): Promise<void> => {

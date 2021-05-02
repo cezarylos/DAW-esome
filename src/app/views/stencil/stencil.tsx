@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 
 import AudioSample from 'app/components/audio-sample/audio-sample.component';
-import styles from 'app/components/stencil/stencil.module.scss';
 import { samples } from 'app/consts/samples';
+import styles from 'app/views/stencil/stencil.module.scss';
 
 const Stencil = (): ReactElement => (
   <div className={styles.container}>

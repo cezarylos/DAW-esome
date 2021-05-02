@@ -3,10 +3,29 @@
 
 .container {
   height: 14rem;
-  width: 100%;
+  min-height: 14rem;
+  width: fit-content;
+  min-width: 100%;
   background: $grey-100;
   display: flex;
   border-radius: 0.8rem;
+  margin-bottom: 2rem;
+  position: relative;
+
+  &:hover {
+    .removeTrackButton {
+      visibility: visible;
+    }
+  }
+
+  .removeTrackButton {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    z-index: 1;
+    background: #DE6139;
+    visibility: hidden;
+  }
 
   .options {
     padding: 1.2rem;
@@ -27,29 +46,6 @@
       width: 100%;
       border: none;
       outline: none;
-    }
-
-    .saveButton {
-      width: 4.4rem;
-      height: 2.3rem;
-      border-radius: 2.3rem;
-      background: $grey-200;
-      border: none;
-      outline: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      span {
-        @include fontInter(1.2rem);
-        color: $silver;
-      }
-
-      &:disabled {
-        cursor: auto;
-        opacity: 0.5;
-      }
     }
 
     .playButton {

@@ -10,7 +10,7 @@ import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
-import { removeSavedTrack } from 'app/store/actions';
+import { removeSavedTrack } from 'app/store/actions/tracks.actions';
 
 const SavedTrack = ({ name, samples, id }: SavedTrackInterface): ReactElement => {
   const context = useContext(AppAudioContext);

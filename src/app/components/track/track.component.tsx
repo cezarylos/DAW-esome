@@ -2,18 +2,20 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
 
+import ActionButton from 'app/components/action-button/action-button.component';
 import Arranger from 'app/components/arranger/arranger.component';
 import PlayButton from 'app/components/play-button/play-button.component';
+import RemoveButton from 'app/components/remove-button/remove-button.component';
 import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import styles from 'app/components/track/track.module.scss';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
-import { saveTrack } from 'app/store/actions';
+import { saveTrack } from 'app/store/actions/tracks.actions';
 import { selectSavedTracks } from 'app/store/slices/tracks.slice';
 
-const Track = (): ReactElement => {
+const Track = ({ onTrackRemove }: any): ReactElement => {
   const context = useContext(AppAudioContext);
   const savedTracks = useSelector(selectSavedTracks);
   const dispatch = useDispatch();
@@ -53,6 +55,7 @@ const Track = (): ReactElement => {
 
   return (
     <div className={styles.container}>
+      <RemoveButton onClick={onTrackRemove} className={styles.removeTrackButton} isWhiteIcon />
       <div className={styles.options}>
         <input
           onChange={event => setTrackName(event.target.value)}
@@ -60,9 +63,7 @@ const Track = (): ReactElement => {
           placeholder={'Track Name'}
           className={styles.trackName}
         />
-        <button disabled={!samples.length} onClick={onTrackSave} className={styles.saveButton}>
-          <span>Save</span>
-        </button>
+        <ActionButton className={styles.saveButton} label={'Save'} onClick={onTrackSave} isDisabled={!samples.length} />
         <PlayButton className={styles.playButton} onClick={() => track?.play()} isPlaying={isPlaying} />
       </div>
       <Arranger samples={samples} setSamples={setSamples} />

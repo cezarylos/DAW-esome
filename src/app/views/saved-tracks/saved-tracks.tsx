@@ -2,9 +2,9 @@ import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SavedTrack from 'app/components/saved-track/saved-track.component';
-import styles from 'app/components/saved-tracks/saved-tracks.module.scss';
-import { getSavedTracks } from 'app/store/actions';
+import { getSavedTracks } from 'app/store/actions/tracks.actions';
 import { selectSavedTracks } from 'app/store/slices/tracks.slice';
+import styles from 'app/views/saved-tracks/saved-tracks.module.scss';
 
 const SavedTracks = (): ReactElement => {
   const savedTracks = useSelector(selectSavedTracks);

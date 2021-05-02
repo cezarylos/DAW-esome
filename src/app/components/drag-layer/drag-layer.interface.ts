@@ -1,6 +1,11 @@
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackContainerInterface } from 'app/interfaces';
 
+export interface PreviewPositionData {
+  previewTimestamp: number | undefined;
+  isInsideTrack: boolean;
+}
+
 export interface PreviewRef {
   element: HTMLDivElement | null;
   type: DragItemTypeEnum;

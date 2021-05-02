@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 import { XYCoord } from 'react-dnd';
 
-import { getPreviewPositionDataInterface } from 'app/components/drag-layer/drag-layer.interface';
+import { getPreviewPositionDataInterface, PreviewPositionData } from 'app/components/drag-layer/drag-layer.interface';
 import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { TrackContainerInterface } from 'app/interfaces';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
@@ -19,11 +19,6 @@ export const dragLayerPreviewStyles = (initialOffset: XYCoord | null, currentOff
     left: x
   };
 };
-
-export interface PreviewPositionData {
-  previewTimestamp: number | undefined;
-  isInsideTrack: boolean;
-}
 
 export const getPreviewPositionData = ({
   x,

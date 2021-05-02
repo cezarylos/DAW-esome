@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { SavedTrackInterface } from 'app/components/saved-track/saved-track.interface';
 import { TrackContainerInterface } from 'app/interfaces';
-import { saveTrack, getSavedTracks, removeSavedTrack } from 'app/store/actions';
+import { saveTrack, getSavedTracks, removeSavedTrack } from 'app/store/actions/tracks.actions';
 import { RootState } from 'app/store/store';
 
 type SliceState = { containers: TrackContainerInterface[]; savedTracks: any[] };
