@@ -2,24 +2,33 @@ import EventEmitter from 'events';
 import { IAudioBufferSourceNode, IAudioContext } from 'standardized-audio-context';
 
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
+import { AudioPluginsInterface } from 'app/interfaces/audio-plugins.interface';
 
 class PlayerModel extends EventEmitter {
   public isPlaying = false;
   public audioBufferSourceNode: IAudioBufferSourceNode<IAudioContext> | undefined;
 
-  constructor(public readonly audioBuffer: AudioBuffer, private readonly context: IAudioContext) {
+  constructor(
+    public readonly audioBuffer: AudioBuffer,
+    private readonly context: IAudioContext,
+    private readonly plugins?: AudioPluginsInterface
+  ) {
     super();
   }
 
   public play(start = 0, delay = 0): void {
-    const { context, audioBuffer, isPlaying } = this;
+    const { context, audioBuffer, isPlaying, plugins } = this;
     if (isPlaying) {
       this.stop();
       return;
     }
-    const source = context.createBufferSource();
+    let source = context.createBufferSource();
     source.buffer = audioBuffer;
-    source.connect(context.destination);
+    if (plugins?.gain) {
+      source.connect(plugins.gain).connect(context.destination);
+    } else {
+      source.connect(context.destination);
+    }
     const offset = start < delay ? delay - start : 0;
     source.start(context.currentTime + start - delay, offset);
     this.setIsPlaying(true);

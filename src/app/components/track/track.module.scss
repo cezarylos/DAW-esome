@@ -57,6 +57,16 @@
       position: absolute;
       bottom: 1.2rem;
     }
+
+    .muteButton {
+      position: absolute;
+      bottom: 1.6rem;
+      right: 1.2rem;
+    }
+
+    .isMuted {
+      border: 2px solid $orange;
+    }
   }
 
   .arrangerContainer {
@@ -85,5 +95,9 @@
       @include fontInter(1.4rem);
       z-index: 2;
     }
+  }
+
+  .trackMuted {
+    opacity: 0.2;
   }
 }

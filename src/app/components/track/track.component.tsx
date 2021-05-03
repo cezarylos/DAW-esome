@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
@@ -28,6 +29,7 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
   const [samples, setSamples] = useState<TrackSampleInterface[]>([]);
   const [track, setTrack] = useState<TrackModel>();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [trackName, setTrackName] = useState('');
 
   useEffect((): void => {
@@ -67,6 +69,11 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
     dispatch(saveTrack(trackToSave));
   };
 
+  const onMuteToggle = (): void => {
+    track?.toggleMute();
+    setIsMuted(!isMuted);
+  }
+
   return (
     <div className={styles.container}>
       <RemoveButton onClick={onTrackRemove} className={styles.removeTrackButton} isWhiteIcon />
@@ -78,9 +85,14 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
           className={styles.trackName}
         />
         <ActionButton className={styles.saveButton} label={'Save'} onClick={onTrackSave} isDisabled={!samples.length} />
-        <PlayButton className={styles.playButton} onClick={() => track?.play()} isPlaying={isPlaying} />
+        <PlayButton className={styles.playButton} onClick={(): void => track?.play()} isPlaying={isPlaying} />
+        <ActionButton
+          className={classNames(styles.muteButton, isMuted && styles.isMuted)}
+          label={'Mute'}
+          onClick={onMuteToggle}
+        />
       </div>
-      <div ref={ref} onScroll={onScroll} className={styles.arrangerContainer}>
+      <div ref={ref} onScroll={onScroll} className={classNames(styles.arrangerContainer, isMuted && styles.trackMuted)}>
         {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
         <Arranger samples={samples} setSamples={setSamples} />
       </div>
