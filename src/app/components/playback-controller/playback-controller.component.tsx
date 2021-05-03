@@ -116,7 +116,7 @@ const PlaybackController = (): ReactElement => {
             <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
           </>
         ))}
-        <div className={styles.timer} style={{ left: timerPosition * TIMELINE_SCALE }} />
+        <div className={styles.timer} style={{ transform: `translate3d(${timerPosition * TIMELINE_SCALE}px, 0, 0)` }} />
       </div>
     </div>
   );
