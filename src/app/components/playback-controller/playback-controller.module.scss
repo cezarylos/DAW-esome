@@ -8,7 +8,6 @@
   background: $grey-100;
   display: flex;
   border-radius: 0.8rem;
-  margin-bottom: 2rem;
   position: relative;
 
   .options {
@@ -29,13 +28,30 @@
       width: fit-content;
       border: none;
       outline: none;
-      margin-left: 1rem;
+      margin-left: 1.5rem;
     }
   }
 
   .timeline {
     flex: 1;
     position: relative;
+
+    .countContainer {
+      position: absolute;
+      top: -1.5rem;
+      height: 1.5rem;
+      width: 100%;
+      background: $orange;
+    }
+
+    .count {
+      position: absolute;
+      top: -1.4rem;
+      width: 1rem;
+      text-align: center;
+      color: $white;
+      @include fontInter(1rem);
+    }
 
     .verticalLine, .timer {
       position: absolute;
@@ -46,7 +62,7 @@
     }
 
     .timer {
-      width: 1px;
+      width: 2px;
       background: $orange;
     }
   }

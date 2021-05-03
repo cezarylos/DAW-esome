@@ -45,7 +45,7 @@ const TrackSamplePreview = ({
       style={getStyles(width, type, start)}
     >
       {previewTimestamp !== undefined && previewTimestamp >= 0 && (
-        <span className={styles.marker}>{previewTimestamp / TIMELINE_SCALE}s</span>
+        <span className={styles.marker}>{(previewTimestamp / TIMELINE_SCALE).toFixed(2)}s</span>
       )}
     </div>
   );

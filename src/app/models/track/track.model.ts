@@ -14,7 +14,7 @@ class TrackModel extends EventEmitter {
   private currentlyPlaying: string[] = [];
   private gainNode: any;
 
-  constructor(private readonly samples: TrackSampleInterface[], private readonly context: IAudioContext) {
+  constructor(public readonly samples: TrackSampleInterface[], private readonly context: IAudioContext) {
     super();
   }
 

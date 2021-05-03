@@ -1,4 +1,13 @@
-import React, { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  MutableRefObject,
+  ReactElement,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useSelector } from 'react-redux';
 
 import PlayButton from 'app/components/play-button/play-button.component';
@@ -7,11 +16,13 @@ import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import TrackModel from 'app/models/track/track.model';
 import { selectTrackModels } from 'app/store/slices/tracks.slice';
+import { parseSecondsToMinutesAndSeconds } from 'app/utils/parse-seconds-to-mintes-and-seconds';
 
 const PlaybackController = (): ReactElement => {
   const trackModels = useSelector(selectTrackModels);
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<MutableRefObject<NodeJS.Timeout>>();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [linesCount, setLinesCount] = useState<number[]>([]);
@@ -32,28 +43,45 @@ const PlaybackController = (): ReactElement => {
     }, 10);
   }, []);
 
+  const isPlayButtonDisabled = useMemo((): boolean => {
+    return !trackModels.length || trackModels.some((trackModel: TrackModel) => !trackModel.samples.length);
+  }, [trackModels]);
+
   const play = useCallback((): void => {
-    const timer = prepareTimer();
-    setTimerPosition(0);
     let currentlyPlaying = [] as string[];
+    ((timerRef.current as unknown) as NodeJS.Timeout) = prepareTimer();
     setIsPlaying(true);
     trackModels.forEach((trackModel: TrackModel) => {
-      trackModel.addListener(PlayerEventsEnum.IS_PLAYING, ({ isPlaying }): void => {
+      const listener = ({ isPlaying }: { isPlaying: boolean }): void => {
         if (isPlaying) {
           return;
         }
         currentlyPlaying = currentlyPlaying.filter(id => trackModel.id !== id);
-        if (!currentlyPlaying.length) {
-          setIsPlaying(false);
-          clearInterval(timer);
-          setTimerPosition(0);
+        trackModel.removeListener(PlayerEventsEnum.IS_PLAYING, listener);
+        if (currentlyPlaying.length) {
+          return;
         }
-      });
+        setIsPlaying(false);
+        resetTimer();
+      };
+      if (!trackModel.samples.length) {
+        return;
+      }
+      trackModel.addListener(PlayerEventsEnum.IS_PLAYING, listener);
       trackModel.play();
       currentlyPlaying = [...currentlyPlaying, trackModel.id];
     });
-    // eslint-disable-next-line
+  }, [trackModels, prepareTimer]);
+
+  const stop = useCallback((): void => {
+    resetTimer();
+    trackModels.forEach((trackModel: TrackModel) => trackModel.stop());
   }, [trackModels]);
+
+  const resetTimer = (): void => {
+    clearInterval((timerRef.current as unknown) as NodeJS.Timeout);
+    setTimerPosition(0);
+  };
 
   useEffect(
     (): (() => void) => () => {
@@ -64,17 +92,29 @@ const PlaybackController = (): ReactElement => {
     [trackModels]
   );
 
-  const timeLabel = useMemo((): string => `00:${timerPosition.toFixed(0)}`, [timerPosition]);
+  const timeLabel = useMemo((): string => parseSecondsToMinutesAndSeconds(timerPosition, true), [timerPosition]);
 
   return (
     <div className={styles.container}>
       <div className={styles.options}>
-        <PlayButton className={styles.playButton} onClick={play} isPlaying={isPlaying} />
+        <PlayButton
+          isPreview
+          isDisabled={isPlayButtonDisabled}
+          className={styles.playButton}
+          onClick={isPlaying ? stop : play}
+          isPlaying={isPlaying}
+        />
         <span className={styles.trackName}>{timeLabel}</span>
       </div>
       <div ref={ref} className={styles.timeline}>
+        <div className={styles.countContainer} />
         {linesCount.map(count => (
-          <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
+          <>
+            <span className={styles.count} style={{ left: count * TIMELINE_SCALE }}>
+              {parseSecondsToMinutesAndSeconds(count, true)}
+            </span>
+            <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
+          </>
         ))}
         <div className={styles.timer} style={{ left: timerPosition * TIMELINE_SCALE }} />
       </div>

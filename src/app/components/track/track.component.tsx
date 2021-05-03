@@ -39,9 +39,13 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
 
   useEffect((): (() => void) => {
     return (): void => {
-      track?.removeAllListeners();
+      if (!track) {
+        return;
+      }
+      track.removeAllListeners();
+      dispatch(removeTrackModel(track.id));
     };
-  }, [track]);
+  }, [track, dispatch]);
 
   const onTrackSave = (): void => {
     if (!samples.length) {
