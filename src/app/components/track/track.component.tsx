@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from 'uuid';
 
@@ -11,6 +11,7 @@ import { TrackPropsInterface } from 'app/components/track/track.interface';
 import styles from 'app/components/track/track.module.scss';
 import { AppAudioContext } from 'app/context/audio.context';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
+import { useOnTrackScroll } from 'app/hooks/on-track-scroll.hook';
 import { TrackSampleInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
 import { saveTrack } from 'app/store/actions/tracks.actions';
@@ -21,6 +22,9 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
   const savedTracks = useSelector(selectSavedTracks);
   const dispatch = useDispatch();
 
+  const ref = useRef<HTMLDivElement | null>(null);
+  const onScroll = useOnTrackScroll(ref);
+
   const [samples, setSamples] = useState<TrackSampleInterface[]>([]);
   const [track, setTrack] = useState<TrackModel>();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -28,6 +32,7 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
 
   useEffect((): void => {
     if (track) {
+      track.stop();
       dispatch(removeTrackModel(track.id));
     }
     const trackInstance = new TrackModel(samples, context);
@@ -75,7 +80,10 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
         <ActionButton className={styles.saveButton} label={'Save'} onClick={onTrackSave} isDisabled={!samples.length} />
         <PlayButton className={styles.playButton} onClick={() => track?.play()} isPlaying={isPlaying} />
       </div>
-      <Arranger samples={samples} setSamples={setSamples} />
+      <div ref={ref} onScroll={onScroll} className={styles.arrangerContainer}>
+        {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
+        <Arranger samples={samples} setSamples={setSamples} />
+      </div>
     </div>
   );
 };

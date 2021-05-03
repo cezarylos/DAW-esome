@@ -1,8 +1,8 @@
 import { CSSProperties } from 'react';
 import { XYCoord } from 'react-dnd';
 
+import { config } from 'app/_config/config';
 import { getPreviewPositionDataInterface, PreviewPositionData } from 'app/components/drag-layer/drag-layer.interface';
-import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { TrackContainerInterface } from 'app/interfaces';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
 
@@ -30,9 +30,9 @@ export const getPreviewPositionData = ({
   const offset = getDragOffset(type);
   const verticalOffset = (previewElementRect?.height || 0) / 2;
 
-  const isInsideTrack = (tracks: TrackContainerInterface): boolean => {
-    const MARGIN = TIMELINE_SCALE + offset;
-    const { left, right, top, bottom } = tracks;
+  const isInsideTrack = (container: TrackContainerInterface): boolean => {
+    const MARGIN = config.timelineScale + offset;
+    const { left, right, top, bottom } = container;
     const isXInside = x >= left - MARGIN && x <= right + MARGIN;
     const isYInside = y + verticalOffset >= top && y + verticalOffset <= bottom;
     return isXInside && isYInside;
@@ -40,7 +40,9 @@ export const getPreviewPositionData = ({
 
   const matchingContainer = containers.find(container => isInsideTrack(container));
   return {
-    previewTimestamp: matchingContainer ? x - matchingContainer.left + offset : undefined,
+    previewTimestamp: matchingContainer
+      ? x - matchingContainer.left + offset + matchingContainer.parentElement.scrollLeft
+      : undefined,
     isInsideTrack: !!matchingContainer
   };
 };

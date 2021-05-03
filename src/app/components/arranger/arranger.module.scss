@@ -3,7 +3,7 @@
 
 .arranger {
   position: relative;
-  flex: 1;
+  height: 100%;
 
   .droppableArea {
     flex: 1;
@@ -16,20 +16,6 @@
     width: 1px;
     background: $grey;
     top: 0;
-  }
-
-  .placeholder {
-    color: $dark-grey;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: fit-content;
-    height: fit-content;
-    text-transform: uppercase;
-    @include fontInter(1.4rem);
   }
 
   .sample {

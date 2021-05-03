@@ -4,4 +4,6 @@ export interface TrackContainerInterface {
   left: number;
   right: number;
   id: string;
+  parentElement: HTMLDivElement;
+  length?: number;
 }

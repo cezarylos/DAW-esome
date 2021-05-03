@@ -2,9 +2,9 @@ import React, { CSSProperties, ReactElement, useEffect, useMemo } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
+import { config } from 'app/_config/config';
 import RemoveButton from 'app/components/remove-button/remove-button.component';
 import styles from 'app/components/track-sample/track-sample.module.scss';
-import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackSampleInterface } from 'app/interfaces';
 
@@ -29,7 +29,7 @@ const TrackSample = ({
   color = DEFAULT_COLOR
 }: TrackSampleInterface): ReactElement => {
   const width = useMemo((): number => {
-    return audioBuffer.duration * TIMELINE_SCALE;
+    return audioBuffer.duration * config.timelineScale;
   }, [audioBuffer]);
 
   const [, drag, preview] = useDrag(

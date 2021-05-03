@@ -1,25 +1,22 @@
-import React, {
-  MutableRefObject,
-  ReactElement,
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { useSelector } from 'react-redux';
+import React, { MutableRefObject, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { config } from 'app/_config/config';
 import PlayButton from 'app/components/play-button/play-button.component';
 import styles from 'app/components/playback-controller/playback-controller.module.scss';
-import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
+import { useOnTrackScroll } from 'app/hooks/on-track-scroll.hook';
+import { TrackContainerInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
-import { selectTrackModels } from 'app/store/slices/tracks.slice';
+import { addTrackContainer, selectTrackModels } from 'app/store/slices/tracks.slice';
 import { parseSecondsToMinutesAndSeconds } from 'app/utils/parse-seconds-to-mintes-and-seconds';
 
 const PlaybackController = (): ReactElement => {
+  const dispatch = useDispatch();
   const trackModels = useSelector(selectTrackModels);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const onScroll = useOnTrackScroll(containerRef);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<MutableRefObject<NodeJS.Timeout>>();
@@ -29,11 +26,11 @@ const PlaybackController = (): ReactElement => {
   const [timerPosition, setTimerPosition] = useState<number>(0);
 
   useEffect((): void => {
-    const width = ref.current?.clientWidth || 0;
-    const roundedCount = Math.ceil(width / TIMELINE_SCALE);
-    const countArray = Array.from(Array(roundedCount).keys());
+    const countArray = Array.from(Array(config.duration).keys());
     setLinesCount(countArray);
-  }, []);
+    const container = { parentElement: containerRef.current } as TrackContainerInterface;
+    dispatch(addTrackContainer(container));
+  }, [dispatch]);
 
   const prepareTimer = useCallback((): NodeJS.Timeout => {
     let timerValue = 0;
@@ -44,7 +41,7 @@ const PlaybackController = (): ReactElement => {
   }, []);
 
   const isPlayButtonDisabled = useMemo((): boolean => {
-    return !trackModels.length || trackModels.some((trackModel: TrackModel) => !trackModel.samples.length);
+    return !trackModels.length || trackModels.every((trackModel: TrackModel) => !trackModel.samples.length);
   }, [trackModels]);
 
   const play = useCallback((): void => {
@@ -92,7 +89,7 @@ const PlaybackController = (): ReactElement => {
     [trackModels]
   );
 
-  const timeLabel = useMemo((): string => parseSecondsToMinutesAndSeconds(timerPosition, true), [timerPosition]);
+  const timeLabel = useMemo((): string => parseSecondsToMinutesAndSeconds(timerPosition), [timerPosition]);
 
   return (
     <div className={styles.container}>
@@ -106,17 +103,22 @@ const PlaybackController = (): ReactElement => {
         />
         <span className={styles.trackName}>{timeLabel}</span>
       </div>
-      <div ref={ref} className={styles.timeline}>
-        <div className={styles.countContainer} />
-        {linesCount.map(count => (
-          <>
-            <span className={styles.count} style={{ left: count * TIMELINE_SCALE }}>
-              {parseSecondsToMinutesAndSeconds(count, true)}
-            </span>
-            <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
-          </>
-        ))}
-        <div className={styles.timer} style={{ transform: `translate3d(${timerPosition * TIMELINE_SCALE}px, 0, 0)` }} />
+      <div ref={containerRef} onScroll={onScroll} className={styles.timelineContainer}>
+        <div ref={ref} className={styles.timeline} style={{ width: config.width }}>
+          <div className={styles.countContainer} />
+          {linesCount.map(count => (
+            <div key={count}>
+              <span className={styles.count} style={{ left: count * config.timelineScale }}>
+                {parseSecondsToMinutesAndSeconds(count)}
+              </span>
+              <div className={styles.verticalLine} style={{ left: count * config.timelineScale }} />
+            </div>
+          ))}
+          <div
+            className={styles.timer}
+            style={{ transform: `translate3d(${timerPosition * config.timelineScale}px, 0, 0)` }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -4,10 +4,10 @@ import { XYCoord } from 'react-dnd/dist/types/types/monitors';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 
+import { config } from 'app/_config/config';
 import { ArrangerPropsInterface } from 'app/components/arranger/arranger.interface';
 import styles from 'app/components/arranger/arranger.module.scss';
 import TrackSample from 'app/components/track-sample/track-sample.component';
-import { TIMELINE_SCALE } from 'app/consts/timeline-scale';
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { TrackContainerInterface, TrackSampleInterface } from 'app/interfaces';
 import { addTrackContainer } from 'app/store/slices/tracks.slice';
@@ -23,9 +23,10 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
       return;
     }
     const { top, bottom, left, right, width } = arrangerRef.current.getBoundingClientRect();
-    const container: TrackContainerInterface = { top, bottom, left, right, id: v4() };
+    const parentElement = arrangerRef.current?.parentElement as HTMLDivElement;
+    const container: TrackContainerInterface = { top, bottom, left, right, id: v4(), parentElement };
     dispatch(addTrackContainer(container));
-    const roundedCount = Math.ceil(width / TIMELINE_SCALE);
+    const roundedCount = Math.ceil(width / config.timelineScale);
     const countArray = Array.from(Array(roundedCount).keys());
     setLinesCount(countArray);
   }, [arrangerRef, dispatch]);
@@ -65,12 +66,11 @@ const Arranger = ({ samples, setSamples }: ArrangerPropsInterface): ReactElement
 
   return (
     <>
-      <div ref={arrangerRef} className={styles.arranger}>
+      <div ref={arrangerRef} className={styles.arranger} style={{ width: config.width }}>
         <div ref={drop} className={styles.droppableArea}>
           {linesCount.map(count => (
-            <div key={count} className={styles.verticalLine} style={{ left: count * TIMELINE_SCALE }} />
+            <div key={count} className={styles.verticalLine} style={{ left: count * config.timelineScale }} />
           ))}
-          {!samples.length && <span className={styles.placeholder}>Drag & drop samples here</span>}
           {samples.map(
             ({ id, start, name, audioBuffer, sourceUrl, color }): ReactElement => (
               <TrackSample
