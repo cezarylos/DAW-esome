@@ -11,7 +11,7 @@ class PlayerModel extends EventEmitter {
     super();
   }
 
-  public play(start = 0, offset = 0): void {
+  public play(start = 0, delay = 0): void {
     const { context, audioBuffer, isPlaying } = this;
     if (isPlaying) {
       this.stop();
@@ -20,7 +20,8 @@ class PlayerModel extends EventEmitter {
     const source = context.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(context.destination);
-    source.start(context.currentTime + start, 0);
+    const offset = start < delay ? delay - start : 0;
+    source.start(context.currentTime + start - delay, offset);
     this.setIsPlaying(true);
     this.audioBufferSourceNode = source;
     this.listenToEndPlaybackEvent();

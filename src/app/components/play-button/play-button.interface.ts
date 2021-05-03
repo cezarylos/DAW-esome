@@ -4,4 +4,5 @@ export interface PlayButtonPropsInterface {
   isDisabled?: boolean;
   isPreview?: boolean;
   className?: string;
+  isPause?: boolean;
 }

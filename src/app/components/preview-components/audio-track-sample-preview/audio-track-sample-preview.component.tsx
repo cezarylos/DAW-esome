@@ -1,4 +1,3 @@
-import {parseSecondsToMinutesAndSeconds} from 'app/utils/parse-seconds-to-mintes-and-seconds';
 import classNames from 'classnames';
 import React, { CSSProperties, ReactElement, RefObject, useMemo } from 'react';
 
@@ -8,6 +7,7 @@ import styles from 'app/components/preview-components/audio-track-sample-preview
 import { DragItemTypeEnum } from 'app/enums/drag-item-type.enum';
 import { useGetPreviewRefHook } from 'app/hooks/get-preview-ref.hook';
 import { getDragOffset } from 'app/utils/get-drag-offset.util';
+import { parseSecondsToMinutesAndSeconds } from 'app/utils/parse-seconds-to-mintes-and-seconds';
 
 const getStyles = (width: number, type: DragItemTypeEnum, start?: number): CSSProperties => {
   const transform = start ? `translate3d(${start}px, 0, 0)` : 'none';
@@ -46,7 +46,9 @@ const TrackSamplePreview = ({
       style={getStyles(width, type, start)}
     >
       {previewTimestamp !== undefined && previewTimestamp >= 0 && (
-        <span className={styles.marker}>{parseSecondsToMinutesAndSeconds(previewTimestamp / config.timelineScale, true)}</span>
+        <span className={styles.marker}>
+          {parseSecondsToMinutesAndSeconds(previewTimestamp / config.timelineScale, true)}
+        </span>
       )}
     </div>
   );

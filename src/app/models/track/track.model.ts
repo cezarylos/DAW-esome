@@ -18,7 +18,7 @@ class TrackModel extends EventEmitter {
     super();
   }
 
-  public play(): void {
+  public play(delay?: number): void {
     const { samples, context, isPlaying } = this;
     if (isPlaying) {
       this.stop();
@@ -27,7 +27,7 @@ class TrackModel extends EventEmitter {
     this.players = samples.map(
       ({ audioBuffer, start = 0, id }): PlayerModel => {
         const player = new PlayerModel(audioBuffer, context);
-        player.play(start / config.timelineScale);
+        player.play(start / config.timelineScale, delay);
         this.currentlyPlaying.push(id);
         this.listenToEndPlaybackEvent(player, id);
         return player;

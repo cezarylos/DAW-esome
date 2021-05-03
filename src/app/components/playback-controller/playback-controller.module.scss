@@ -29,7 +29,11 @@
       width: fit-content;
       border: none;
       outline: none;
-      margin-left: 1.5rem;
+      margin-left: 1rem;
+    }
+
+    .playButton {
+      margin-right: 0.5rem;
     }
   }
 
@@ -61,7 +65,7 @@
         @include fontInter(1rem);
       }
 
-      .verticalLine, .timer {
+      .verticalLine, .tick {
         position: absolute;
         height: 100%;
         width: 1px;
@@ -69,9 +73,29 @@
         top: 0;
       }
 
-      .timer {
+      .tick {
         width: 2px;
         background: $orange;
+        animation: timer calc(var(--duration) * 1s) linear;
+        animation-play-state: paused;
+        will-change: transform;
+      }
+
+      .animatedTick {
+        animation-play-state: running;
+      }
+
+      .animationStopped {
+        animation: none;
+      }
+
+      @keyframes timer {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(calc(var(--width) * 1px), 0, 0);
+        }
       }
     }
   }

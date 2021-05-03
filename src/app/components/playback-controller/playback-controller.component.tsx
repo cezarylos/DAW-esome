@@ -1,4 +1,14 @@
-import React, { MutableRefObject, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
+import React, {
+  CSSProperties,
+  MutableRefObject,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { config } from 'app/_config/config';
@@ -32,13 +42,13 @@ const PlaybackController = (): ReactElement => {
     dispatch(addTrackContainer(container));
   }, [dispatch]);
 
-  const prepareTimer = useCallback((): NodeJS.Timeout => {
-    let timerValue = 0;
-    return setInterval(() => {
-      timerValue += 1 / 100;
+  const prepareTimer = useCallback((): NodeJS.Timeout | any => {
+    let timerValue = timerPosition;
+    return setInterval((): void => {
+      timerValue += 1 / 10;
       setTimerPosition(timerValue);
-    }, 10);
-  }, []);
+    }, 100);
+  }, [timerPosition]);
 
   const isPlayButtonDisabled = useMemo((): boolean => {
     return !trackModels.length || trackModels.every((trackModel: TrackModel) => !trackModel.samples.length);
@@ -48,6 +58,7 @@ const PlaybackController = (): ReactElement => {
     let currentlyPlaying = [] as string[];
     ((timerRef.current as unknown) as NodeJS.Timeout) = prepareTimer();
     setIsPlaying(true);
+
     trackModels.forEach((trackModel: TrackModel) => {
       const listener = ({ isPlaying }: { isPlaying: boolean }): void => {
         if (isPlaying) {
@@ -59,24 +70,31 @@ const PlaybackController = (): ReactElement => {
           return;
         }
         setIsPlaying(false);
-        resetTimer();
+        resetTimer(true);
       };
       if (!trackModel.samples.length) {
         return;
       }
       trackModel.addListener(PlayerEventsEnum.IS_PLAYING, listener);
-      trackModel.play();
+      trackModel.play(timerPosition);
       currentlyPlaying = [...currentlyPlaying, trackModel.id];
     });
-  }, [trackModels, prepareTimer]);
+  }, [trackModels, prepareTimer, timerPosition]);
 
-  const stop = useCallback((): void => {
-    resetTimer();
-    trackModels.forEach((trackModel: TrackModel) => trackModel.stop());
-  }, [trackModels]);
+  const stop = useCallback(
+    (isPause?: boolean): void => {
+      resetTimer(isPause);
+      trackModels.forEach((trackModel: TrackModel) => trackModel.stop());
+    },
+    [trackModels]
+  );
 
-  const resetTimer = (): void => {
+  const resetTimer = (isPause?: boolean): void => {
     clearInterval((timerRef.current as unknown) as NodeJS.Timeout);
+    if (isPause) {
+      setIsPlaying(false);
+      return;
+    }
     setTimerPosition(0);
   };
 
@@ -98,9 +116,11 @@ const PlaybackController = (): ReactElement => {
           isPreview
           isDisabled={isPlayButtonDisabled}
           className={styles.playButton}
-          onClick={isPlaying ? stop : play}
+          onClick={(): void => (isPlaying ? stop(true) : play())}
           isPlaying={isPlaying}
+          isPause
         />
+        <PlayButton isPreview isDisabled={isPlayButtonDisabled} onClick={(): void => stop()} isPlaying />
         <span className={styles.trackName}>{timeLabel}</span>
       </div>
       <div ref={containerRef} onScroll={onScroll} className={styles.timelineContainer}>
@@ -115,8 +135,17 @@ const PlaybackController = (): ReactElement => {
             </div>
           ))}
           <div
-            className={styles.timer}
-            style={{ transform: `translate3d(${timerPosition * config.timelineScale}px, 0, 0)` }}
+            style={
+              {
+                '--duration': config.duration,
+                '--width': config.width
+              } as CSSProperties
+            }
+            className={classNames(
+              styles.tick,
+              isPlaying && styles.animatedTick,
+              !isPlaying && !timerPosition && styles.animationStopped
+            )}
           />
         </div>
       </div>
