@@ -25,7 +25,7 @@ class PlayerModel extends EventEmitter {
     let source = context.createBufferSource();
     source.buffer = audioBuffer;
     if (plugins?.gain) {
-      source.connect(plugins.gain).connect(context.destination);
+      source.connect(plugins.gain)?.connect(context.destination);
     } else {
       source.connect(context.destination);
     }

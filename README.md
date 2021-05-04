@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# DAWesome - DAW that is awesome!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hi! This is **DAWesome** - an awesome Digital Audio Workstation created in **ReactJS** with **TypeScript**!
 
-## Available Scripts
+* [Installation](#installation)
+* [Getting Started](#getting-started)
+* [Technical Choices](#technical-choices)
+* [Testing](#testing)
+* [Additional Features](#additional-features)
+* [TODO Features](#todo-features)
+## Installation
 
-In the project directory, you can run:
+In the project root directory simply run `npm install`.
 
-### `yarn start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Start the app by executing the `npm start` command in your terminal. It will run the development server on **localhost:3000**. From now on, you are good to go and can start playing with the app!
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technical Choices
 
-### `yarn test`
+- ***Create React App*** - Initial configuration for ReactJS app - [Docs](https://github.com/facebook/create-react-app#readme).
+- ***TypeScript*** - improves the code quality making it more reliable and easier to maintain and refactor.
+- ***SCSS modules*** - CSS preprocessor make writing styles more easily, give avalibity to use imports, mixins, variables. Modules
+  scope scss stylesheet inside particular component.
+- ***Redux and ReduxToolKit*** - simplifies store management and development of store related features. Minimizes boilerplate code and
+  improves readibility - [Docs](https://redux-toolkit.js.org/).
+- ***React DnD*** - For making drag and drop easy - [Docs](https://react-dnd.github.io/react-dnd/about).
+- ***Standardized Audio Context*** - A cross-browser wrapper for the Web Audio API -
+  [Docs](https://github.com/chrisguttandin/standardized-audio-context).
+- ***Prettier*** - To ensure that code is always correctly formatted - [Docs](https://prettier.io/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Apart from what is above, there are a couple of addional packages listed in `package.json` file which usage is self explanatory.
 
-### `yarn build`
+## Testing
+To run existing tests execute `npm run test`. Basic tests are written which covers some of the components, services and utils. Web Audio API is mocked using additonal package called *standardized-audio-context-mock*.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Additional Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Playback Controller** - Allows to play, pause and stop simultaneously multiple tracks. Comes with a timer and tick marker to indicate the current second of the playback. Controller is horizontally scrollable (you can use scrollbar or *SHIFT + mouswheel* on controller itself or on any track). It position is sticky so it's always at the top regardless of how many tracks there are.
+- **Multiple Tracks** - Adds and removes track from the view making the content vertically scrollable.
+- **Mute Track** - Allows to mute and unmute certain track so it won't be heard during the playback.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## TODO Features
+This list could be endless as there are infitie possibilities to make this app better but here I will list some easy-wins that will improve the app and the user experience:
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Import of music files from drive
+- Editing saved tracks (user click on EDIT button on saved track and that creates new track  containing proper samples)
+- Saving whole arragement (logic for saving single track is done, now it only needs to be extended to save a list of tracks)
+- Solo track (opposite of muting, mute others and keep only "soloed" track playing)
+- Adding more plugins (apart from gainNode which is already created) and effects (Web Audio API gives many fantastic features to experiment with AudioNodes or use an existing libraries like [Tuna](https://github.com/Theodeus/tuna).
