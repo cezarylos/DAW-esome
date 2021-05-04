@@ -16,6 +16,8 @@ In the project root directory simply run `npm install`.
 
 Start the app by executing the `npm start` command in your terminal. It will run the development server on **localhost:3000**. From now on, you are good to go and can start playing with the app!
 
+You can set the *TIMELINE* scale (zoom) and *DURATION* of the song in *config.ts* file located at *src/app/_config*.
+
 ## Technical Choices
 
 - ***Create React App*** - Initial configuration for ReactJS app - [Docs](https://github.com/facebook/create-react-app#readme).
@@ -43,6 +45,7 @@ To run existing tests execute `npm run test`. Basic tests are written which cove
 ## TODO Features
 This list could be endless as there are infitie possibilities to make this app better but here I will list some easy-wins that will improve the app and the user experience:
 
+- Make *TIMESCALE* and *DURATION* variables dynamic and specified by user
 - Import of music files from drive
 - Editing saved tracks (user click on EDIT button on saved track and that creates new track  containing proper samples)
 - Saving whole arragement (logic for saving single track is done, now it only needs to be extended to save a list of tracks)
