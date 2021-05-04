@@ -18,7 +18,7 @@ describe('audio-sample', (): void => {
     async (): Promise<void> => {
       await act(
         async (): Promise<void> => {
-          component = await mount(<AudioSample name={name} sourceUrl={sourceUrl} />);
+          component = await mount(<AudioSample name={name} sourceUrl={sourceUrl} color={'#FFFFFF'} />);
         }
       );
     }
