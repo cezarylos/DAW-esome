@@ -1,58 +1,54 @@
 import classNames from 'classnames';
-import React, {
-  CSSProperties,
-  MutableRefObject,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { CSSProperties, MutableRefObject, ReactElement, useCallback, useMemo, useRef } from 'react';
 
 import { config } from 'app/_config/config';
 import PlayButton from 'app/components/play-button/play-button.component';
+import usePlaybackControllerEncapsulation from 'app/components/playback-controller/playback-controller-encapsulation.hook';
 import styles from 'app/components/playback-controller/playback-controller.module.scss';
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
 import { useOnTrackScroll } from 'app/hooks/on-track-scroll.hook';
-import { TrackContainerInterface } from 'app/interfaces';
 import TrackModel from 'app/models/track/track.model';
-import { addTrackContainer, selectTrackModels } from 'app/store/slices/tracks.slice';
 import { parseSecondsToMinutesAndSeconds } from 'app/utils/parse-seconds-to-mintes-and-seconds';
 
 const PlaybackController = (): ReactElement => {
-  const dispatch = useDispatch();
-  const trackModels = useSelector(selectTrackModels);
-
   const containerRef = useRef<HTMLDivElement | null>(null);
   const onScroll = useOnTrackScroll(containerRef);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<MutableRefObject<NodeJS.Timeout>>();
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [linesCount, setLinesCount] = useState<number[]>([]);
-  const [timerPosition, setTimerPosition] = useState<number>(0);
+  const {
+    isPlaying,
+    setIsPlaying,
+    linesCount,
+    timerPosition,
+    setTimerPosition,
+    trackModels
+  } = usePlaybackControllerEncapsulation(containerRef);
 
-  useEffect((): void => {
-    const countArray = Array.from(Array(config.duration).keys());
-    setLinesCount(countArray);
-    const container = { parentElement: containerRef.current } as TrackContainerInterface;
-    dispatch(addTrackContainer(container));
-  }, [dispatch]);
-
-  const prepareTimer = useCallback((): NodeJS.Timeout | any => {
+  const prepareTimer = useCallback((): NodeJS.Timeout => {
     let timerValue = timerPosition;
     return setInterval((): void => {
       timerValue += 1 / 10;
       setTimerPosition(timerValue);
     }, 100);
-  }, [timerPosition]);
+  }, [timerPosition, setTimerPosition]);
 
   const isPlayButtonDisabled = useMemo((): boolean => {
     return !trackModels.length || trackModels.every((trackModel: TrackModel) => !trackModel.samples.length);
   }, [trackModels]);
+
+  const resetTimer = useCallback(
+    (isPause?: boolean): void => {
+      clearInterval((timerRef.current as unknown) as NodeJS.Timeout);
+      if (isPause) {
+        setIsPlaying(false);
+        return;
+      }
+      setTimerPosition(0);
+    },
+    [setIsPlaying, setTimerPosition]
+  );
 
   const play = useCallback((): void => {
     let currentlyPlaying = [] as string[];
@@ -79,32 +75,14 @@ const PlaybackController = (): ReactElement => {
       trackModel.play(timerPosition);
       currentlyPlaying = [...currentlyPlaying, trackModel.id];
     });
-  }, [trackModels, prepareTimer, timerPosition]);
+  }, [trackModels, prepareTimer, timerPosition, setIsPlaying, resetTimer]);
 
   const stop = useCallback(
     (isPause?: boolean): void => {
       resetTimer(isPause);
       trackModels.forEach((trackModel: TrackModel) => trackModel.stop());
     },
-    [trackModels]
-  );
-
-  const resetTimer = (isPause?: boolean): void => {
-    clearInterval((timerRef.current as unknown) as NodeJS.Timeout);
-    if (isPause) {
-      setIsPlaying(false);
-      return;
-    }
-    setTimerPosition(0);
-  };
-
-  useEffect(
-    (): (() => void) => () => {
-      return (): void => {
-        trackModels.forEach((trackModel: TrackModel) => trackModel.removeAllListeners());
-      };
-    },
-    [trackModels]
+    [trackModels, resetTimer]
   );
 
   const timeLabel = useMemo((): string => parseSecondsToMinutesAndSeconds(timerPosition), [timerPosition]);

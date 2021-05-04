@@ -72,7 +72,7 @@ const Track = ({ onTrackRemove }: TrackPropsInterface): ReactElement => {
   const onMuteToggle = (): void => {
     track?.toggleMute();
     setIsMuted(!isMuted);
-  }
+  };
 
   return (
     <div className={styles.container}>

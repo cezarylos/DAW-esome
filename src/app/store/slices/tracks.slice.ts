@@ -20,7 +20,7 @@ export const tracks = createSlice({
     trackModels: []
   },
   reducers: {
-    addTrackModel: (state: SliceState, { payload }: PayloadAction<any>): void => {
+    addTrackModel: (state: SliceState, { payload }: PayloadAction<TrackModel>): void => {
       state.trackModels = [...state.trackModels, payload];
     },
     removeTrackModel: (state: SliceState, { payload }: PayloadAction<string>): void => {

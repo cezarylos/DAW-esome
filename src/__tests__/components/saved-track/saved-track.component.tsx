@@ -1,5 +1,5 @@
-import { mount } from 'enzyme';
-import React, { ReactElement } from 'react';
+import { mount, ReactWrapper } from 'enzyme';
+import React, { ReactElement, ReactNode } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -28,7 +28,7 @@ const mockedTracks = [
   }
 ];
 
-let component: any;
+let component: ReactWrapper;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -37,7 +37,7 @@ const store = mockStore({
     savedTracks: mockedTracks
   }
 });
-const Wrapper = ({ children }: any): ReactElement => <Provider store={store}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }): ReactElement => <Provider store={store}>{children}</Provider>;
 
 describe('Saved Track Component', (): void => {
   it('should remove saved track from store', async (): Promise<void> => {

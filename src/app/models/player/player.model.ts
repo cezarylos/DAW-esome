@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import { IAudioBufferSourceNode, IAudioContext } from 'standardized-audio-context';
 
 import { PlayerEventsEnum } from 'app/enums/player-events.enum';
-import { AudioPluginsInterface } from 'app/interfaces/audio-plugins.interface';
+import { AudioPluginsInterface } from 'app/interfaces';
 
 class PlayerModel extends EventEmitter {
   public isPlaying = false;
