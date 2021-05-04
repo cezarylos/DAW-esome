@@ -57,11 +57,11 @@ const PlaybackController = (): ReactElement => {
   const play = useCallback((): void => {
     let currentlyPlaying = [] as string[];
     ((timerRef.current as unknown) as NodeJS.Timeout) = prepareTimer();
-    setIsPlaying(true);
 
     trackModels.forEach((trackModel: TrackModel) => {
       const listener = ({ isPlaying }: { isPlaying: boolean }): void => {
         if (isPlaying) {
+          setIsPlaying(true);
           return;
         }
         currentlyPlaying = currentlyPlaying.filter(id => trackModel.id !== id);
